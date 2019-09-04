@@ -121,6 +121,7 @@ public class Window {
 				screen.height/2-frmUniversalupnp.getHeight()/2);
 		
 		JButton btnDeleteMapping = new JButton("Delete Mapping");
+		btnDeleteMapping.setToolTipText("Delete the selected UPnP mapping.");
 		btnDeleteMapping.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnDeleteMappingClicked();
@@ -130,6 +131,7 @@ public class Window {
 		frmUniversalupnp.getContentPane().add(btnDeleteMapping);
 		
 		JButton btnNewMapping = new JButton("New Mapping");
+		btnNewMapping.setToolTipText("Create a new UPnP mapping.");
 		btnNewMapping.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnAddMappingClicked();
@@ -152,6 +154,7 @@ public class Window {
 		scrollPane.setViewportView(table);
 		
 		JButton btnStopMapping = new JButton("Stop Mapping");
+		btnStopMapping.setToolTipText("Stops the selected UPnP service (closes the port).");
 		btnStopMapping.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnStopMappingClicked();
@@ -161,6 +164,7 @@ public class Window {
 		frmUniversalupnp.getContentPane().add(btnStopMapping);
 		
 		JButton btnStartMapping = new JButton("Start Mapping");
+		btnStartMapping.setToolTipText("Start the selected UPnP service (will open the port).");
 		btnStartMapping.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				btnStartMappingClicked();
