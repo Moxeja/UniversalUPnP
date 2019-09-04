@@ -25,3 +25,5 @@ hs_err_pid*
 .project
 *.prefs
 /3rdParty/
+/bin/
+/.settings/
