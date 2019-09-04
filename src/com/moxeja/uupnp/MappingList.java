@@ -17,7 +17,7 @@ public class MappingList {
 	}
 	
 	public void deleteEntry(int id) {
-		if (id > entries.size())
+		if (id > entries.size() || id < 0)
 			return;
 		
 		entries.get(id).stopUPnP();
@@ -25,14 +25,14 @@ public class MappingList {
 	}
 	
 	public MappingEntry getEntry(int id) {
-		if (id > entries.size())
+		if (id > entries.size() || id < 0)
 			return null;
 		
 		return entries.get(id);
 	}
 	
 	public void startEntry(int id) {
-		if (id > entries.size())
+		if (id > entries.size() || id < 0)
 			return;
 		
 		try {
@@ -44,7 +44,7 @@ public class MappingList {
 	}
 	
 	public void stopEntry(int id) {
-		if (id > entries.size())
+		if (id > entries.size() || id < 0)
 			return;
 		
 		entries.get(id).stopUPnP();
