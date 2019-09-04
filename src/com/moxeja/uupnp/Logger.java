@@ -33,6 +33,7 @@ public class Logger {
 			e.printStackTrace();
 		}
 		
+		// Print basic runtime information
 		pw.println("OS Name: "+System.getProperty("os.name")+", Arch: "+System.getProperty("os.arch"));
 		pw.println("Java version: "+System.getProperty("java.version"));
 	}

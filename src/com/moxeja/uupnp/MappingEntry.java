@@ -45,6 +45,7 @@ public class MappingEntry {
 			return;
 		}
 		
+		// Get local IP
 		String internalIP;
 		try {
 			internalIP = InetAddress.getLocalHost().getHostAddress();
@@ -52,6 +53,7 @@ public class MappingEntry {
 			throw new UnknownHostException();
 		}
 		
+		// Setup portmapping to use with upnpservice
 		PortMapping[] portList;
 		if (protocol == Protocols.UDP) {
 			portList = new PortMapping[] {new PortMapping(port, internalIP, PortMapping.Protocol.UDP, name)};
@@ -64,6 +66,7 @@ public class MappingEntry {
 			throw new Exception("Unknown Protocol Type: "+protocol);
 		}
 		
+		// Use Jetty implementation to stop errors
 		upnpservice = new UpnpServiceImpl(new JettyUPnPConfiguration(), new PortMappingListener(portList));
 		upnpservice.getControlPoint().search();
 		running = true;

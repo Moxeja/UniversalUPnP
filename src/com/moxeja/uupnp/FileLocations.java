@@ -16,11 +16,13 @@ public class FileLocations {
 		Unknown
 	}
 
+	// Load OS type at runtime start
 	private final static OSType OSNAME = System.getProperty("os.name").contains("Win") ? OSType.Windows : (
 			System.getProperty("os.name").contains("Linux") ? OSType.Linux : (
 			System.getProperty("os.name").contains("Mac") ? OSType.Mac : OSType.Unknown));
 	
 	private static String getWorkingDir() {
+		// user.home works on all OS so use it as backup
 		Path temp;
 		if (OSNAME == OSType.Windows) {
 			temp = Paths.get(System.getenv("APPDATA"), "UniversalUPnP");
@@ -32,6 +34,7 @@ public class FileLocations {
 			temp = Paths.get(System.getProperty("user.home"), "UniversalUPnP");
 		}
 		
+		// Create directory if it doesn't exist
 		if (Files.notExists(temp)) {
 			try {
 				Files.createDirectory(temp);
@@ -45,10 +48,12 @@ public class FileLocations {
 	}
 	
 	public static String getLogFilename(String filename) {
+		// Use paths.get to create URI with correct file separators
 		return Paths.get(getWorkingDir(), filename+".log").toString();
 	}
 	
 	public static String getEntriesFilename() {
+		// Use paths.get to create URI with correct file separators
 		return Paths.get(getWorkingDir(), "entries.json").toString();
 	}
 }

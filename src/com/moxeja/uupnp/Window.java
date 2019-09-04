@@ -48,6 +48,7 @@ public class Window {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		// Setup logging
 		LOGGER = new Logger(FileLocations.getLogFilename("uupnp"));
 		try {
 			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
@@ -56,12 +57,14 @@ public class Window {
 			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
 		}
 		
+		// Program cannot be run in headless mode since it is GUI based
 		if (GraphicsEnvironment.isHeadless()) {
 			LOGGER.log(LogSeverity.FATAL, "Application cannot be run in headless mode.");
 			LOGGER.close();
 			System.exit(1);
 		}
 		
+		// Add shutdown hook to ensure data gets written and finalised
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
 				LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
@@ -81,6 +84,7 @@ public class Window {
 		});
 		LOGGER.log(LogSeverity.INFO, "Added shutdown hook.");
 		
+		// Start GUI
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -230,6 +234,7 @@ public class Window {
 	}
 	
 	private void btnAddMappingClicked() {
+		// Setup UI elements
 		JTextField name = new JTextField();
 		name.setText("Default-Name");
 		
@@ -246,6 +251,7 @@ public class Window {
 				"Protocol:", protocol
 		};
 		
+		// Prompt user for settings
 		int option = JOptionPane.showConfirmDialog(this.frmUniversalupnp, message, "Add Entry", JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 			if (name.getText().isEmpty()) {
@@ -265,6 +271,7 @@ public class Window {
 		if (selectedIndex == -1)
 			return;
 		
+		// User confirmation
 		int option = JOptionPane.showConfirmDialog(this.frmUniversalupnp, "Are you sure you want to delete an entry?", 
 				"Delete Entry", JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
