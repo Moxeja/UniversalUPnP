@@ -1,6 +1,7 @@
 # UniversalUPnP
  A client to allow users to create UPnP mappings manually.
- Uses GSON and Cling libraries from https://github.com/google/gson and https://github.com/4thline/cling respectively.
+ Uses GSON, Cling, Seamless and Jetty libraries from https://github.com/google/gson, https://github.com/4thline/cling,
+	https://github.com/4thline/seamless and https://github.com/eclipse/jetty.project respectively.
 
 # Referenced Libraries
  * gson.jar
