@@ -39,7 +39,7 @@ public class MappingEntry {
 		return running;
 	}
 	
-	public void startUPnP() throws Exception {
+	public void startUPnP() throws Exception, UnknownHostException {
 		if (upnpservice != null) {
 			running = true;
 			return;
@@ -47,11 +47,7 @@ public class MappingEntry {
 		
 		// Get local IP
 		String internalIP;
-		try {
-			internalIP = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			throw new UnknownHostException();
-		}
+		internalIP = InetAddress.getLocalHost().getHostAddress();
 		
 		// Setup portmapping to use with upnpservice
 		PortMapping[] portList;

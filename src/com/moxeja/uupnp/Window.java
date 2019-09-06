@@ -50,6 +50,10 @@ public class Window {
 	public static void main(String[] args) {
 		// Setup logging
 		LOGGER = new Logger(FileLocations.getLogFilename("uupnp"));
+		LOGGER.log(LogSeverity.INFO, "Uses GSON, Cling, Seamless and Jetty libraries from "
+				+ "https://github.com/google/gson, https://github.com/4thline/cling,"
+				+ "https://github.com/4thline/seamless and https://github.com/eclipse/jetty.project respectively.");
+		
 		try {
 			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
 		} catch (FileNotFoundException e1) {
@@ -67,7 +71,6 @@ public class Window {
 		// Add shutdown hook to ensure data gets written and finalised
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			public void run() {
-				LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
 				DATA.stopAll();
 				
 				try {
@@ -218,7 +221,6 @@ public class Window {
 		if (selectedIndex == -1)
 			return;
 		
-		LOGGER.log(LogSeverity.INFO, "Starting service with id: "+selectedIndex);
 		DATA.startEntry(selectedIndex);
 		refreshTable();
 	}
@@ -228,7 +230,6 @@ public class Window {
 		if (selectedIndex == -1)
 			return;
 		
-		LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+selectedIndex);
 		DATA.stopEntry(selectedIndex);
 		refreshTable();
 	}
@@ -260,7 +261,6 @@ public class Window {
 				return;
 			}
 			
-			LOGGER.log(LogSeverity.INFO, "Adding new service to list.");
 			DATA.addEntry(new MappingEntry(name.getText(), protocol.getSelectedValue(), (Integer)port.getValue()));
 			refreshTable();
 		}
@@ -275,7 +275,6 @@ public class Window {
 		int option = JOptionPane.showConfirmDialog(this.frmUniversalupnp, "Are you sure you want to delete an entry?", 
 				"Delete Entry", JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
-			LOGGER.log(LogSeverity.INFO, "Deleting service with id: "+selectedIndex);
 			DATA.deleteEntry(selectedIndex);
 			refreshTable();
 		}

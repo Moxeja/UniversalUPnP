@@ -14,10 +14,12 @@ public class Logger {
 		INFO,
 		WARN,
 		ERROR,
-		FATAL
+		FATAL,
+		FOLLOW
 	}
 	
 	private PrintWriter pw = null;
+	private boolean invalidLogger = false;
 	
 	public Logger(String filepath) {
 		// Delete previous log if it exists
@@ -28,14 +30,20 @@ public class Logger {
 		}
 		
 		try {
-			pw = new PrintWriter(new BufferedWriter(new FileWriter(filepath, false)));
+			pw = new PrintWriter(new BufferedWriter(new FileWriter(filepath, true)));
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.out.println("ERROR: Could not open logging file stream. Logging to file will be disabled for this session.");
+			invalidLogger = true;
 		}
 		
 		// Print basic runtime information
-		pw.println("OS Name: "+System.getProperty("os.name")+", Arch: "+System.getProperty("os.arch"));
-		pw.println("Java version: "+System.getProperty("java.version"));
+		if (!invalidLogger) {
+			pw.println("OS Name: "+System.getProperty("os.name")+", Arch: "+System.getProperty("os.arch"));
+			pw.println("Java version: "+System.getProperty("java.version"));
+		}
+		System.out.println("OS Name: "+System.getProperty("os.name")+", Arch: "+System.getProperty("os.arch"));
+		System.out.println("Java version: "+System.getProperty("java.version"));
 	}
 	
 	public void log(LogSeverity severity, String message) {
@@ -43,23 +51,38 @@ public class Logger {
 		
 		switch(severity) {
 		case INFO:
-			pw.print("[INFO]-[");
+			if (!invalidLogger) pw.print("[INFO]-[");
+			System.out.print("[INFO]-[");
 			break;
 		case WARN:
-			pw.print("[WARN]-[");
+			if (!invalidLogger) pw.print("[WARN]-[");
+			System.out.print("[WARN]-[");
 			break;
 		case ERROR:
-			pw.print("[ERROR]-[");
+			if (!invalidLogger) pw.print("[ERROR]-[");
+			System.out.print("[ERROR]-[");
 			break;
 		case FATAL:
-			pw.print("[FATAL]-[");
+			if (!invalidLogger) pw.print("[FATAL]-[");
+			System.out.print("[FATAL]-[");
+			break;
+		case FOLLOW:
+			if (!invalidLogger) pw.print(">>>> ");
+			System.out.print(">>>> ");
 			break;
 		default:
-			pw.print("[UNKNOWN]-[");
+			if (!invalidLogger) pw.print("[UNKNOWN]-[");
+			System.out.print("[UNKNOWN]-[");
 			break;
 		}
-		pw.print(timestamp + "]: ");
-		pw.println(message);
+		
+		if (severity != LogSeverity.FOLLOW) {
+			if (!invalidLogger) pw.println(timestamp + "]: " + message);
+			System.out.println(timestamp + "]: " + message);
+		} else {
+			if (!invalidLogger) pw.println(message);
+			System.out.println(message);
+		}
 	}
 	
 	public void close() {
