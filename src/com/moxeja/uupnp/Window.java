@@ -42,6 +42,7 @@ public class Window {
 	private DefaultTableModel tablemodel;
 	
 	public static Logger LOGGER;
+	public static final String VERSION = "V1.1";
 	private static MappingList DATA;
 
 	/**
@@ -53,6 +54,7 @@ public class Window {
 		LOGGER.log(LogSeverity.INFO, "Uses GSON, Cling, Seamless and Jetty libraries from "
 				+ "https://github.com/google/gson, https://github.com/4thline/cling,"
 				+ "https://github.com/4thline/seamless and https://github.com/eclipse/jetty.project respectively.");
+		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
 		try {
 			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
@@ -117,7 +119,7 @@ public class Window {
 		frmUniversalupnp.setSize(new Dimension(600, 400));
 		frmUniversalupnp.setResizable(false);
 		frmUniversalupnp.setName("frame");
-		frmUniversalupnp.setTitle("UniversalUPnP");
+		frmUniversalupnp.setTitle("UniversalUPnP "+VERSION);
 		frmUniversalupnp.setBounds(100, 100, 600, 400);
 		frmUniversalupnp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUniversalupnp.getContentPane().setLayout(null);
