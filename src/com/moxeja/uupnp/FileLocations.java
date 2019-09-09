@@ -17,21 +17,23 @@ public class FileLocations {
 	}
 
 	// Load OS type at runtime start
-	private final static OSType OSNAME = System.getProperty("os.name").contains("Win") ? OSType.Windows : (
+	private static final OSType OSNAME = System.getProperty("os.name").contains("Win") ? OSType.Windows : (
 			System.getProperty("os.name").contains("Linux") ? OSType.Linux : (
 			System.getProperty("os.name").contains("Mac") ? OSType.Mac : OSType.Unknown));
+	
+	private static final String APP_DIR = "UniversalUPnP";
 	
 	private static String getWorkingDir() {
 		// user.home works on all OS so use it as backup
 		Path temp;
 		if (OSNAME == OSType.Windows) {
-			temp = Paths.get(System.getenv("APPDATA"), "UniversalUPnP");
+			temp = Paths.get(System.getenv("APPDATA"), APP_DIR);
 		} else if (OSNAME == OSType.Linux) {
-			temp = Paths.get(System.getProperty("user.home"), "UniversalUPnP");
+			temp = Paths.get(System.getProperty("user.home"), APP_DIR);
 		} else if (OSNAME == OSType.Mac) {
-			temp = Paths.get(System.getProperty("user.home"), "UniversalUPnP");
+			temp = Paths.get(System.getProperty("user.home"), APP_DIR);
 		} else {
-			temp = Paths.get(System.getProperty("user.home"), "UniversalUPnP");
+			temp = Paths.get(System.getProperty("user.home"), APP_DIR);
 		}
 		
 		// Create directory if it doesn't exist
