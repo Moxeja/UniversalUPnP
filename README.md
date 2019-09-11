@@ -4,17 +4,17 @@
 	https://github.com/4thline/seamless and https://github.com/eclipse/jetty.project respectively.
 
 # Referenced Libraries
- * gson.jar
+ * gson-2.8.5.jar
  * cling-core.jar
  * cling-support.jar
- * seamless-http.jar
- * seamless-util.jar
- * jetty-client.jar
- * jetty-continuation.jar
- * jetty-http.jar
- * jetty-io.jar
- * jetty-security.jar
- * jetty-server.jar
- * jetty-servlet.jar
- * jetty-util.jar
- * javax.servlet.jar
+ * seamless-http-1.1.2.jar
+ * seamless-util-1.1.2.jar
+ * jetty-client-8.1.22.v20160922.jar
+ * jetty-continuation-8.1.22.v20160922.jar
+ * jetty-http-8.1.22.v20160922.jar
+ * jetty-io-8.1.22.v20160922.jar
+ * jetty-security-8.1.22.v20160922.jar
+ * jetty-server-8.1.22.v20160922.jar
+ * jetty-servlet-8.1.22.v20160922.jar
+ * jetty-util-8.1.22.v20160922.jar
+ * javax.servlet-3.0.0.v201112011016.jar
