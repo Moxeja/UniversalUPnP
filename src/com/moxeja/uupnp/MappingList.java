@@ -25,7 +25,8 @@ public class MappingList {
 		if (id > entries.size() || id < 0)
 			return;
 		
-		stopEntry(id);
+		Window.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
+		entries.get(id).stopUPnP();
 		
 		Window.LOGGER.log(LogSeverity.INFO, "Deleting service with id: "+id);
 		MappingEntry temp = entries.get(id);
