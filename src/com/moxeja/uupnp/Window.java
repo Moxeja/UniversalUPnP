@@ -42,7 +42,7 @@ public class Window {
 	private DefaultTableModel tablemodel;
 	
 	public static Logger LOGGER;
-	public static final String VERSION = "V1.1";
+	public static final String VERSION = "V1.2";
 	private static MappingList DATA;
 
 	/**
@@ -116,11 +116,11 @@ public class Window {
 	private void initialize() {
 		frmUniversalupnp = new JFrame();
 		frmUniversalupnp.setVisible(true);
-		frmUniversalupnp.setSize(new Dimension(600, 400));
+		frmUniversalupnp.setSize(new Dimension(680, 400));
 		frmUniversalupnp.setResizable(false);
 		frmUniversalupnp.setName("frame");
 		frmUniversalupnp.setTitle("UniversalUPnP "+VERSION);
-		frmUniversalupnp.setBounds(100, 100, 600, 400);
+		frmUniversalupnp.setBounds(100, 100, 680, 400);
 		frmUniversalupnp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUniversalupnp.getContentPane().setLayout(null);
 		
@@ -136,7 +136,7 @@ public class Window {
 				btnDeleteMappingClicked();
 			}
 		});
-		btnDeleteMapping.setBounds(435, 58, 149, 40);
+		btnDeleteMapping.setBounds(515, 58, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnDeleteMapping);
 		
 		JButton btnNewMapping = new JButton("New Mapping");
@@ -146,11 +146,11 @@ public class Window {
 				btnAddMappingClicked();
 			}
 		});
-		btnNewMapping.setBounds(435, 7, 149, 40);
+		btnNewMapping.setBounds(515, 7, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnNewMapping);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 7, 415, 353);
+		scrollPane.setBounds(10, 7, 495, 353);
 		frmUniversalupnp.getContentPane().add(scrollPane);
 		
 		String col[] = {"Name", "Ports", "Protocol", "Running"};
@@ -169,7 +169,7 @@ public class Window {
 				btnStopMappingClicked();
 			}
 		});
-		btnStopMapping.setBounds(435, 320, 149, 40);
+		btnStopMapping.setBounds(515, 320, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStopMapping);
 		
 		JButton btnStartMapping = new JButton("Start Mapping");
@@ -179,7 +179,7 @@ public class Window {
 				btnStartMappingClicked();
 			}
 		});
-		btnStartMapping.setBounds(435, 269, 149, 40);
+		btnStartMapping.setBounds(515, 269, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStartMapping);
 		
 		// Try to load entries from Json file
