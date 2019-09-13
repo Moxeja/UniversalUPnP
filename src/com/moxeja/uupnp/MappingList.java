@@ -1,6 +1,7 @@
 package com.moxeja.uupnp;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
 
@@ -72,9 +73,21 @@ public class MappingList {
 	
 	public void stopAll() {
 		Window.LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
+		LinkedList<Thread> threads = new LinkedList<Thread>();
 		
 		entries.forEach((e) -> {
-			e.stopUPnP();
+			if (e.isRunning()) {
+				threads.push(new Thread(() -> {
+					e.stopUPnP();
+				}));
+				threads.peek().start();
+			}
 		});
+		
+		for (Thread thread : threads) {
+			try {
+				thread.join();
+			} catch (InterruptedException e1) {}
+		}
 	}
 }
