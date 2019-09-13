@@ -16,7 +16,8 @@ public class MappingList {
 	public void addEntry(MappingEntry entry) {
 		if (entry != null) {
 			Window.LOGGER.log(LogSeverity.INFO, "Creating new mapping.");
-			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+entry.getProtocol()+", Port: "+entry.getPort());
+			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+entry.getProtocol()+
+					", Ports: "+entry.getPortBegin()+"->"+entry.getPortEnd());
 			
 			entries.add(entry);
 		}
@@ -31,7 +32,8 @@ public class MappingList {
 		
 		Window.LOGGER.log(LogSeverity.INFO, "Deleting service with id: "+id);
 		MappingEntry temp = entries.get(id);
-		Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+", Port: "+temp.getPort());
+		Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+
+				", Ports: "+temp.getPortBegin()+"->"+temp.getPortEnd());
 		
 		entries.remove(id);
 	}
@@ -49,13 +51,15 @@ public class MappingList {
 		
 		Window.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
 		MappingEntry temp = entries.get(id);
-		Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+", Port: "+temp.getPort());
+		Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+
+				", Ports: "+temp.getPortBegin()+"->"+temp.getPortEnd());
 		
 		try {
 			entries.get(id).startUPnP();
 		} catch (Exception e) {
 			Window.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
-			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+", Port: "+temp.getPort());
+			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+
+					", Ports: "+temp.getPortBegin()+"->"+temp.getPortEnd());
 			e.printStackTrace();
 		}
 	}
@@ -66,7 +70,8 @@ public class MappingList {
 		
 		Window.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		MappingEntry temp = entries.get(id);
-		Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+", Port: "+temp.getPort());
+		Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+temp.getProtocol()+
+				", Ports: "+temp.getPortBegin()+"->"+temp.getPortEnd());
 		
 		entries.get(id).stopUPnP();
 	}
