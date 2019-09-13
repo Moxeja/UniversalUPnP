@@ -212,7 +212,7 @@ public class Window {
 			tablemodel.removeRow(0);
 		
 		for (MappingEntry entry : DATA.getEntryList()) {
-			Object[] temp = {entry.getName(), entry.getPort(), entry.getProtocol(), entry.isRunning()};
+			Object[] temp = {entry.getName(), entry.getPortBegin()+"->"+entry.getPortEnd(), entry.getProtocol(), entry.isRunning()};
 			tablemodel.addRow(temp);
 		}
 		LOGGER.log(LogSeverity.INFO, "Refreshed table.");
@@ -241,16 +241,21 @@ public class Window {
 		JTextField name = new JTextField();
 		name.setText("Default-Name");
 		
-		JSpinner port = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
-		NumberEditor editor = new NumberEditor(port, "#");
-		port.setEditor(editor);
+		JSpinner portBegin = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
+		NumberEditor editor = new NumberEditor(portBegin, "#");
+		portBegin.setEditor(editor);
+		
+		JSpinner portEnd = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
+		NumberEditor editor2 = new NumberEditor(portEnd, "#");
+		portEnd.setEditor(editor2);
 		
 		JList<Protocols> protocol = new JList<Protocols>(Protocols.values());
 		protocol.setSelectedIndex(0);
 		
 		Object[] message = {
 				"Name:", name,
-				"Port:", port,
+				"Port Begin:", portBegin,
+				"Port End:", portEnd,
 				"Protocol:", protocol
 		};
 		
@@ -262,8 +267,13 @@ public class Window {
 						"Empty Fields", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
+			if ((Integer)portBegin.getValue() > (Integer)portEnd.getValue()) {
+				JOptionPane.showMessageDialog(this.frmUniversalupnp, "Begin port cannot be higher than end port. Please try again.", 
+						"Invalid ports", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			
-			DATA.addEntry(new MappingEntry(name.getText(), protocol.getSelectedValue(), (Integer)port.getValue()));
+			DATA.addEntry(new MappingEntry(name.getText(), protocol.getSelectedValue(), (Integer)portBegin.getValue(), (Integer)portEnd.getValue()));
 			refreshTable();
 		}
 	}
