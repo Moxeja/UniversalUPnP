@@ -45,6 +45,17 @@ public class Window {
 	public static final String VERSION = "V1.2";
 	private static MappingList DATA;
 
+	private static int getJavaVersion() {
+		String version = System.getProperty("java.version");
+		if (version.startsWith("1.")) {
+			version = version.substring(2, 3);
+		} else {
+			int dot = version.indexOf(".");
+			if (dot != -1) { version = version.substring(0, dot); }
+		}
+		return Integer.parseInt(version);
+	}
+	
 	/**
 	 * Launch the application.
 	 */
@@ -66,6 +77,13 @@ public class Window {
 		// Program cannot be run in headless mode since it is GUI based
 		if (GraphicsEnvironment.isHeadless()) {
 			LOGGER.log(LogSeverity.FATAL, "Application cannot be run in headless mode.");
+			LOGGER.close();
+			System.exit(1);
+		}
+		
+		// Java 8 is the minimum required
+		if (getJavaVersion() < 8) {
+			LOGGER.log(LogSeverity.FATAL, "At least Java 8 is required to run this software.");
 			LOGGER.close();
 			System.exit(1);
 		}
