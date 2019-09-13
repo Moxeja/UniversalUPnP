@@ -35,7 +35,7 @@ public class MappingEntry {
 		return port;
 	}
 	
-	public boolean getRunning() {
+	public boolean isRunning() {
 		return running;
 	}
 	

@@ -212,7 +212,7 @@ public class Window {
 			tablemodel.removeRow(0);
 		
 		for (MappingEntry entry : DATA.getEntryList()) {
-			Object[] temp = {entry.getName(), entry.getPort(), entry.getProtocol(), entry.getRunning()};
+			Object[] temp = {entry.getName(), entry.getPort(), entry.getProtocol(), entry.isRunning()};
 			tablemodel.addRow(temp);
 		}
 		LOGGER.log(LogSeverity.INFO, "Refreshed table.");
