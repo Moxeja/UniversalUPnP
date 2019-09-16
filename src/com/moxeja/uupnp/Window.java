@@ -39,6 +39,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.moxeja.uupnp.Logger.LogSeverity;
+import java.awt.Font;
 
 public class Window {
 
@@ -180,9 +181,11 @@ public class Window {
 		tablemodel = new DefaultTableModel(col, 0);
 		
 		table = new JTable(tablemodel);
+		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		table.setBackground(UIManager.getColor("Table.background"));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
+		table.setRowHeight(23);
 		scrollPane.setViewportView(table);
 		
 		JButton btnStopMapping = new JButton("Stop Mapping");
