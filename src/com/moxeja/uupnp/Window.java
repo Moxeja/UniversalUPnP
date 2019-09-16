@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -19,8 +21,11 @@ import java.io.PrintWriter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JSpinner.NumberEditor;
 import javax.swing.JTable;
@@ -199,6 +204,82 @@ public class Window {
 		});
 		btnStartMapping.setBounds(515, 269, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStartMapping);
+		
+		// Right-click context menu
+		JPopupMenu popupMenu = new JPopupMenu();
+		scrollPane.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+		
+		table.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+				
+				int row = table.rowAtPoint(e.getPoint());
+				if (row >= 0 && row < table.getRowCount()) {
+					table.setRowSelectionInterval(row, row);
+				} else {
+					table.clearSelection();
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popupMenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+		
+		JMenuItem mntmAddMapping = new JMenuItem("Add Mapping");
+		mntmAddMapping.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnAddMappingClicked();
+			}
+		});
+		popupMenu.add(mntmAddMapping);
+		
+		JMenuItem mntmDeleteMapping = new JMenuItem("Delete Mapping");
+		mntmDeleteMapping.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnDeleteMappingClicked();
+			}
+		});
+		popupMenu.add(mntmDeleteMapping);
+		
+		JSeparator separator = new JSeparator();
+		popupMenu.add(separator);
+		
+		JMenuItem mntmStartMapping = new JMenuItem("Start Mapping");
+		mntmStartMapping.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnStartMappingClicked();
+			}
+		});
+		popupMenu.add(mntmStartMapping);
+		
+		JMenuItem mntmStopMapping = new JMenuItem("Stop Mapping");
+		mntmStopMapping.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnStopMappingClicked();
+			}
+		});
+		popupMenu.add(mntmStopMapping);
 		
 		// Try to load entries from Json file
 		BufferedReader br = null;
