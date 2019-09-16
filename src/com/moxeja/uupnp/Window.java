@@ -185,7 +185,7 @@ public class Window {
 		table.setBackground(UIManager.getColor("Table.background"));
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
-		table.setRowHeight(23);
+		table.getColumnModel().getColumn(1).setCellRenderer(new MultiLineCellRenderer());
 		scrollPane.setViewportView(table);
 		
 		JButton btnStopMapping = new JButton("Stop Mapping");
