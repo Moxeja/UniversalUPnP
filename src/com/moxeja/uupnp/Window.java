@@ -45,7 +45,7 @@ public class Window {
 	private DefaultTableModel tablemodel;
 	
 	public static Logger LOGGER;
-	public static final String VERSION = "V1.2";
+	public static final String VERSION = "V1.3";
 	private static MappingList DATA;
 
 	private static int getJavaVersion() {
