@@ -1,5 +1,6 @@
 package com.moxeja.uupnp;
 
+import java.awt.Point;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -11,20 +12,18 @@ import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
+import com.moxeja.datatypes.PortInfo;
+
 public class MappingEntry {
 
 	private String name;
-	private Protocols protocol;
-	private int portBegin;
-	private int portEnd;
+	private ArrayList<PortInfo> ports = new ArrayList<PortInfo>();
 	private transient boolean running;
 	private transient UpnpService upnpservice;
 	
-	public MappingEntry(String name, Protocols protocol, int portBegin, int portEnd) {
+	public MappingEntry(String name, ArrayList<PortInfo> ports) {
 		this.name = name;
-		this.protocol = protocol;
-		this.portBegin = portBegin;
-		this.portEnd = portEnd;
+		this.ports = ports;
 		running = false;
 	}
 	
@@ -32,20 +31,20 @@ public class MappingEntry {
 		return name;
 	}
 	
-	public Protocols getProtocol() {
-		return protocol;
+	public Protocols getProtocol(int index) {
+		return ports.get(index).protocol;
 	}
 	
-	public int getPortBegin() {
-		return portBegin;
+	public ArrayList<PortInfo> getPorts() {
+		return ports;
 	}
 	
-	public int getPortEnd() {
-		return portEnd;
+	public Point getPort(int index) {
+		return ports.get(index).ports;
 	}
 	
-	private Iterator<Integer> getPorts() {
-		IntStream temp = IntStream.rangeClosed(portBegin, portEnd);
+	private Iterator<Integer> getPortIterator(Point range) {
+		IntStream temp = IntStream.rangeClosed(range.x, range.y);
 		return temp.boxed().iterator();
 	}
 	
@@ -66,22 +65,26 @@ public class MappingEntry {
 		PortMapping[] portList = null;
 		ArrayList<PortMapping> tempList = new ArrayList<PortMapping>();
 		
-		if (protocol == Protocols.UDP) {
-			getPorts().forEachRemaining((e) -> {
-				tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
-			});
-		} else if (protocol == Protocols.TCP) {
-			getPorts().forEachRemaining((e) -> {
-				tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
-			});
-		} else if (protocol == Protocols.UDP_TCP) {
-			getPorts().forEachRemaining((e) -> {
-				tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
-				tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
-			});
-		} else {
-			throw new Exception("Unknown Protocol Type: "+protocol);
+		for (PortInfo port : ports) {
+			if (port.protocol == Protocols.UDP) {
+				getPortIterator(port.ports).forEachRemaining((e) -> {
+					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
+				});
+			} else if (port.protocol == Protocols.TCP) {
+				getPortIterator(port.ports).forEachRemaining((e) -> {
+					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
+				});
+			} else if (port.protocol == Protocols.UDP_TCP) {
+				getPortIterator(port.ports).forEachRemaining((e) -> {
+					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
+					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
+				});
+			} else {
+				throw new Exception("Unknown Protocol Type: "+port.protocol);
+			}
 		}
+		
+		
 		portList = tempList.toArray(new PortMapping[tempList.size()]);
 		
 		// Use Jetty implementation to stop errors
