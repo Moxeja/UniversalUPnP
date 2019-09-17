@@ -9,11 +9,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 
 import javax.swing.JButton;
@@ -66,12 +70,12 @@ public class Window {
 				+ "https://github.com/4thline/seamless and https://github.com/eclipse/jetty.project respectively.");
 		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
-//		try {
-//			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
-//		} catch (FileNotFoundException e1) {
-//			e1.printStackTrace();
-//			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
-//		}
+		try {
+			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
+		}
 		
 		// Program cannot be run in headless mode since it is GUI based
 		if (GraphicsEnvironment.isHeadless()) {
