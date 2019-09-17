@@ -1,45 +1,38 @@
 package com.moxeja.uupnp;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JSpinner;
-import javax.swing.JSpinner.NumberEditor;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.moxeja.datatypes.PortInfo;
 import com.moxeja.uupnp.Logger.LogSeverity;
-import java.awt.Font;
 
 public class Window {
 
@@ -73,12 +66,12 @@ public class Window {
 				+ "https://github.com/4thline/seamless and https://github.com/eclipse/jetty.project respectively.");
 		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
-		try {
-			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
-		}
+//		try {
+//			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
+//		} catch (FileNotFoundException e1) {
+//			e1.printStackTrace();
+//			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
+//		}
 		
 		// Program cannot be run in headless mode since it is GUI based
 		if (GraphicsEnvironment.isHeadless()) {
@@ -186,6 +179,9 @@ public class Window {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.getColumnModel().getColumn(1).setCellRenderer(new MultiLineCellRenderer());
+		table.getColumnModel().getColumn(2).setCellRenderer(new MultiLineCellRenderer());
+		table.getTableHeader().setBackground(Color.lightGray);
+		table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 16));
 		scrollPane.setViewportView(table);
 		
 		JButton btnStopMapping = new JButton("Stop Mapping");
@@ -313,9 +309,23 @@ public class Window {
 		while (tablemodel.getRowCount() > 0)
 			tablemodel.removeRow(0);
 		
-		for (MappingEntry entry : DATA.getEntryList()) {
-			Object[] temp = {entry.getName(), entry.getPortBegin()+"->"+entry.getPortEnd(), entry.getProtocol(), entry.isRunning()};
-			tablemodel.addRow(temp);
+		for (MappingEntry entry : DATA.getEntryList()) {			
+			if (entry.getPorts() != null) {
+				StringBuilder sbPorts = new StringBuilder();
+				StringBuilder sbProtocols = new StringBuilder();
+				
+				for (PortInfo port : entry.getPorts()) {
+					if (port.ports.x == port.ports.y)
+						sbPorts.append(Integer.toString(port.ports.x)+'\n');
+					else
+						sbPorts.append(port.ports.x+"->"+port.ports.y+'\n');
+					
+					sbProtocols.append(port.protocol.toString()+'\n');
+				}
+				
+				Object[] temp = {entry.getName(), sbPorts.toString(), sbProtocols.toString(), entry.isRunning()};
+				tablemodel.addRow(temp);
+			}
 		}
 		LOGGER.log(LogSeverity.INFO, "Refreshed table.");
 	}
@@ -339,45 +349,14 @@ public class Window {
 	}
 	
 	private void btnAddMappingClicked() {
-		// Setup UI elements
-		JTextField name = new JTextField();
-		name.setText("Default-Name");
+		MappingInputForm inputForm = new MappingInputForm(this.frmUniversalupnp);
+		inputForm.setVisible(true);
 		
-		JSpinner portBegin = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
-		NumberEditor editor = new NumberEditor(portBegin, "#");
-		portBegin.setEditor(editor);
-		
-		JSpinner portEnd = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
-		NumberEditor editor2 = new NumberEditor(portEnd, "#");
-		portEnd.setEditor(editor2);
-		
-		JList<Protocols> protocol = new JList<Protocols>(Protocols.values());
-		protocol.setSelectedIndex(0);
-		
-		Object[] message = {
-				"Name:", name,
-				"Port Begin:", portBegin,
-				"Port End:", portEnd,
-				"Protocol:", protocol
-		};
-		
-		// Prompt user for settings
-		int option = JOptionPane.showConfirmDialog(this.frmUniversalupnp, message, "Add Entry", JOptionPane.OK_CANCEL_OPTION);
-		if (option == JOptionPane.OK_OPTION) {
-			if (name.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(this.frmUniversalupnp, "Cannot leave the name field empty. Please try again.", 
-						"Empty Fields", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			if ((Integer)portBegin.getValue() > (Integer)portEnd.getValue()) {
-				JOptionPane.showMessageDialog(this.frmUniversalupnp, "Begin port cannot be higher than end port. Please try again.", 
-						"Invalid ports", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-			
-			DATA.addEntry(new MappingEntry(name.getText(), protocol.getSelectedValue(), (Integer)portBegin.getValue(), (Integer)portEnd.getValue()));
+		if (inputForm.okClose) {
+			DATA.addEntry(new MappingEntry(inputForm.name, inputForm.ports));
 			refreshTable();
 		}
+		inputForm.dispose();
 	}
 	
 	private void btnDeleteMappingClicked() {
