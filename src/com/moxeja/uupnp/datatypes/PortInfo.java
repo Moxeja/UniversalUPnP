@@ -4,11 +4,11 @@ import java.awt.Point;
 
 public class PortInfo {
 
-	public Point ports;
+	public Point portRange;
 	public Protocols protocol;
 	
-	public PortInfo(Point ports, Protocols protocol) {
-		this.ports = ports;
+	public PortInfo(Point portRange, Protocols protocol) {
+		this.portRange = portRange;
 		this.protocol = protocol;
 	}
 }

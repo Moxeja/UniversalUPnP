@@ -40,7 +40,7 @@ public class MappingEntry {
 	}
 	
 	public Point getPort(int index) {
-		return ports.get(index).ports;
+		return ports.get(index).portRange;
 	}
 	
 	private Iterator<Integer> getPortIterator(Point range) {
@@ -67,15 +67,15 @@ public class MappingEntry {
 		
 		for (PortInfo port : ports) {
 			if (port.protocol == Protocols.UDP) {
-				getPortIterator(port.ports).forEachRemaining((e) -> {
+				getPortIterator(port.portRange).forEachRemaining((e) -> {
 					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
 				});
 			} else if (port.protocol == Protocols.TCP) {
-				getPortIterator(port.ports).forEachRemaining((e) -> {
+				getPortIterator(port.portRange).forEachRemaining((e) -> {
 					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
 				});
 			} else if (port.protocol == Protocols.UDP_TCP) {
-				getPortIterator(port.ports).forEachRemaining((e) -> {
+				getPortIterator(port.portRange).forEachRemaining((e) -> {
 					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
 					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
 				});
