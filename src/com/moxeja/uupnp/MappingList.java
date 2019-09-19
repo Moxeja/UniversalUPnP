@@ -21,7 +21,7 @@ public class MappingList {
 			MainWindow.LOGGER.log(LogSeverity.INFO, "Creating new mapping.");
 			for (PortInfo port : entry.getPorts()) {
 				MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
-						", Ports: "+port.ports.x+"->"+port.ports.y);
+						", Ports: "+port.portRange.x+"->"+port.portRange.y);
 			}
 			
 			entries.add(entry);
@@ -39,7 +39,7 @@ public class MappingList {
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
 			MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-					", Ports: "+port.ports.x+"->"+port.ports.y);
+					", Ports: "+port.portRange.x+"->"+port.portRange.y);
 		}
 		
 		entries.remove(id);
@@ -60,7 +60,7 @@ public class MappingList {
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
 			MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-					", Ports: "+port.ports.x+"->"+port.ports.y);
+					", Ports: "+port.portRange.x+"->"+port.portRange.y);
 		}
 		
 		try {
@@ -69,7 +69,7 @@ public class MappingList {
 			MainWindow.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
 			for (PortInfo port : temp.getPorts()) {
 				MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-						", Ports: "+port.ports.x+"->"+port.ports.y);
+						", Ports: "+port.portRange.x+"->"+port.portRange.y);
 			}
 			e.printStackTrace();
 		}
@@ -83,7 +83,7 @@ public class MappingList {
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
 			MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-					", Ports: "+port.ports.x+"->"+port.ports.y);
+					", Ports: "+port.portRange.x+"->"+port.portRange.y);
 		}
 		
 		entries.get(id).stopUPnP();

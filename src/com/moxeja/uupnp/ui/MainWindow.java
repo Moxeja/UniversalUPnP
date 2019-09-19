@@ -306,10 +306,10 @@ public class MainWindow {
 				StringBuilder sbProtocols = new StringBuilder();
 				
 				for (PortInfo port : entry.getPorts()) {
-					if (port.ports.x == port.ports.y)
-						sbPorts.append(Integer.toString(port.ports.x)+'\n');
+					if (port.portRange.x == port.portRange.y)
+						sbPorts.append(Integer.toString(port.portRange.x)+'\n');
 					else
-						sbPorts.append(port.ports.x+"->"+port.ports.y+'\n');
+						sbPorts.append(port.portRange.x+"->"+port.portRange.y+'\n');
 					
 					sbProtocols.append(port.protocol.toString()+'\n');
 				}
