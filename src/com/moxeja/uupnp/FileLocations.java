@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.ui.MainWindow;
 
 public class FileLocations {
 	
@@ -41,7 +42,7 @@ public class FileLocations {
 			try {
 				Files.createDirectory(temp);
 			} catch (IOException e) {
-				Window.LOGGER.log(LogSeverity.ERROR, "Could not create configuration directory.");
+				MainWindow.LOGGER.log(LogSeverity.ERROR, "Could not create configuration directory.");
 				e.printStackTrace();
 			}
 		}

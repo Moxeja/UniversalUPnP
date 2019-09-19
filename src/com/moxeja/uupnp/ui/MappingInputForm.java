@@ -1,4 +1,4 @@
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.ui;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -22,7 +22,8 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import com.moxeja.datatypes.PortInfo;
+import com.moxeja.uupnp.datatypes.PortInfo;
+import com.moxeja.uupnp.datatypes.Protocols;
 
 public class MappingInputForm extends JDialog {
 
