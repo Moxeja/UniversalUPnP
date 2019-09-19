@@ -1,4 +1,4 @@
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.datatypes;
 
 import java.awt.Point;
 import java.net.InetAddress;
@@ -12,7 +12,7 @@ import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
-import com.moxeja.datatypes.PortInfo;
+import com.moxeja.uupnp.JettyUPnPConfiguration;
 
 public class MappingEntry {
 

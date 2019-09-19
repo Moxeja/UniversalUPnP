@@ -1,8 +1,7 @@
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
@@ -35,10 +34,14 @@ import javax.swing.table.DefaultTableModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import com.moxeja.datatypes.PortInfo;
+import com.moxeja.uupnp.FileLocations;
+import com.moxeja.uupnp.Logger;
+import com.moxeja.uupnp.MappingList;
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.datatypes.MappingEntry;
+import com.moxeja.uupnp.datatypes.PortInfo;
 
-public class Window {
+public class MainWindow {
 
 	private JFrame frmUniversalupnp;
 	private JTable table;
@@ -58,11 +61,11 @@ public class Window {
 		}
 		return Integer.parseInt(version);
 	}
-	
+
 	/**
-	 * Launch the application.
+	 * Create the application.
 	 */
-	public static void main(String[] args) {
+	public MainWindow() {
 		// Setup logging
 		LOGGER = new Logger(FileLocations.getLogFilename("uupnp"));
 		LOGGER.log(LogSeverity.INFO, "Uses GSON, Cling, Seamless and Jetty libraries from "
@@ -110,25 +113,9 @@ public class Window {
 		});
 		LOGGER.log(LogSeverity.INFO, "Added shutdown hook.");
 		
-		// Start GUI
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Window window = new Window();
-					window.frmUniversalupnp.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the application.
-	 */
-	public Window() {
 		LOGGER.log(LogSeverity.INFO, "Initialising window.");
 		initialize();
+		frmUniversalupnp.setVisible(true);
 	}
 
 	/**

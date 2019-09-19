@@ -3,8 +3,10 @@ package com.moxeja.uupnp;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import com.moxeja.datatypes.PortInfo;
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.datatypes.MappingEntry;
+import com.moxeja.uupnp.datatypes.PortInfo;
+import com.moxeja.uupnp.ui.MainWindow;
 
 public class MappingList {
 
@@ -16,9 +18,9 @@ public class MappingList {
 	
 	public void addEntry(MappingEntry entry) {
 		if (entry != null) {
-			Window.LOGGER.log(LogSeverity.INFO, "Creating new mapping.");
+			MainWindow.LOGGER.log(LogSeverity.INFO, "Creating new mapping.");
 			for (PortInfo port : entry.getPorts()) {
-				Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
+				MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
 						", Ports: "+port.ports.x+"->"+port.ports.y);
 			}
 			
@@ -30,13 +32,13 @@ public class MappingList {
 		if (id > entries.size() || id < 0)
 			return;
 		
-		Window.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
+		MainWindow.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		entries.get(id).stopUPnP();
 		
-		Window.LOGGER.log(LogSeverity.INFO, "Deleting service with id: "+id);
+		MainWindow.LOGGER.log(LogSeverity.INFO, "Deleting service with id: "+id);
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
-			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
+			MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
 					", Ports: "+port.ports.x+"->"+port.ports.y);
 		}
 		
@@ -54,19 +56,19 @@ public class MappingList {
 		if (id > entries.size() || id < 0)
 			return;
 		
-		Window.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
+		MainWindow.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
-			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
+			MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
 					", Ports: "+port.ports.x+"->"+port.ports.y);
 		}
 		
 		try {
 			entries.get(id).startUPnP();
 		} catch (Exception e) {
-			Window.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
+			MainWindow.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
 			for (PortInfo port : temp.getPorts()) {
-				Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
+				MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
 						", Ports: "+port.ports.x+"->"+port.ports.y);
 			}
 			e.printStackTrace();
@@ -77,10 +79,10 @@ public class MappingList {
 		if (id > entries.size() || id < 0)
 			return;
 		
-		Window.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
+		MainWindow.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
-			Window.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
+			MainWindow.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
 					", Ports: "+port.ports.x+"->"+port.ports.y);
 		}
 		
@@ -88,7 +90,7 @@ public class MappingList {
 	}
 	
 	public void stopAll() {
-		Window.LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
+		MainWindow.LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
 		LinkedList<Thread> threads = new LinkedList<Thread>();
 		
 		entries.forEach((e) -> {

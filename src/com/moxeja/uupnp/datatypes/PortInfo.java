@@ -1,8 +1,6 @@
-package com.moxeja.datatypes;
+package com.moxeja.uupnp.datatypes;
 
 import java.awt.Point;
-
-import com.moxeja.uupnp.Protocols;
 
 public class PortInfo {
 

@@ -1,4 +1,4 @@
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.datatypes;
 
 public enum Protocols {
 	UDP,
