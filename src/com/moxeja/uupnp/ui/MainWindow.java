@@ -9,7 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
@@ -20,6 +22,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 
+import com.moxeja.uupnp.FileLocations;
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.datatypes.MappingEntry;
@@ -192,9 +195,38 @@ public class MainWindow {
 		});
 		popupMenu.add(mntmStopMapping);
 		
+		showStartupWarning();
+		
 		// Show data in table
 		refreshTable();
 		Main.LOGGER.log(LogSeverity.INFO, "Window initialisation complete.");
+	}
+	
+	private void showStartupWarning() {
+		Main.LOGGER.log(LogSeverity.INFO, "Checking for warning disable file.");
+		if (FileLocations.warningDisabled()) {
+			Main.LOGGER.log(LogSeverity.INFO, "Startup warning disabled.");
+			return;
+		}
+		
+		// Use JLabel html capabilities
+		String text = "<html><nobr>You <u>must</u> make sure to stop the UPnP mapping once you are finished with it!"
+				+ "<br>Leaving ports open can be a big <u>security risk</u>!"
+				+ "<br>Closing the program will also close all ports opened by it this runtime.</nobr></html>";
+		JLabel label = new JLabel(text);
+		JCheckBox chkDisable = new JCheckBox("Disable Warning");
+		
+		Object[] message = {
+				label, chkDisable
+		};
+		
+		// Show warning to user
+		Main.LOGGER.log(LogSeverity.INFO, "Showing warning to user.");
+		JOptionPane.showMessageDialog(frmUniversalupnp, message, "UPnP Warning", JOptionPane.INFORMATION_MESSAGE);
+		
+		if (chkDisable.isSelected()) {
+			FileLocations.createWarningFile();
+		}
 	}
 	
 	private void refreshTable() {
