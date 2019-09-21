@@ -22,6 +22,7 @@ public class FileLocations {
 			System.getProperty("os.name").contains("Mac") ? OSType.Mac : OSType.Unknown));
 	
 	private static final String APP_DIR = "UniversalUPnP";
+	private static final String WARN_FILENAME = "disable-warning";
 	
 	private static String getWorkingDir() {
 		// user.home works on all OS so use it as backup
@@ -57,5 +58,24 @@ public class FileLocations {
 	public static String getEntriesFilename() {
 		// Use paths.get to create URI with correct file separators
 		return Paths.get(getWorkingDir(), "entries.json").toString();
+	}
+	
+	private static Path getWarningFile() {
+		// Use paths.get to create URI with correct file separators
+		return Paths.get(getWorkingDir(), WARN_FILENAME);
+	}
+	
+	public static boolean warningDisabled() {
+		return Files.exists(getWarningFile());
+	}
+	
+	public static void createWarningFile() {
+		try {
+			Files.createFile(getWarningFile());
+			Main.LOGGER.log(LogSeverity.INFO, "Created file to disable warnings.");
+		} catch (IOException e) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Could not disable startup warning.");
+			e.printStackTrace();
+		}
 	}
 }
