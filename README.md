@@ -10,4 +10,4 @@
  ```
  The built file will be in the UniversalUPnP/target folder.
  
- Alternatively, add the project as a Maven project to an IDE, and build with the package goal.
+ Alternatively, add the project as a Maven project to an IDE, and build with the "package" goal.

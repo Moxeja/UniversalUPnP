@@ -6,6 +6,7 @@
 	<groupId>com.moxeja.uupnp</groupId>
 	<artifactId>UniversalUPnP</artifactId>
 	<version>1.3</version>
+	
 	<repositories>
 		<repository>
 			<id>cling-repo</id>
@@ -13,6 +14,7 @@
 			<url>http://4thline.org/m2</url>
 		</repository>
 	</repositories>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -45,11 +47,11 @@
 			<version>8.1.22.v20160922</version>
 		</dependency>
 	</dependencies>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
+	
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
