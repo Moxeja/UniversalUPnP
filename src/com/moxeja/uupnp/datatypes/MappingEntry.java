@@ -12,8 +12,6 @@ import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
-import com.moxeja.uupnp.JettyUPnPConfiguration;
-
 public class MappingEntry {
 
 	private String name;
@@ -87,8 +85,7 @@ public class MappingEntry {
 		
 		portList = tempList.toArray(new PortMapping[tempList.size()]);
 		
-		// Use Jetty implementation to stop errors
-		upnpservice = new UpnpServiceImpl(new JettyUPnPConfiguration(), new PortMappingListener(portList));
+		upnpservice = new UpnpServiceImpl(new PortMappingListener(portList));
 		upnpservice.getControlPoint().search();
 		running = true;
 	}
