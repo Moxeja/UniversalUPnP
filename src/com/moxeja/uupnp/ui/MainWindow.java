@@ -72,7 +72,7 @@ public class MainWindow {
 				btnDeleteMappingClicked();
 			}
 		});
-		btnDeleteMapping.setBounds(515, 58, 149, 40);
+		btnDeleteMapping.setBounds(515, 109, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnDeleteMapping);
 		
 		JButton btnNewMapping = new JButton("New Mapping");
@@ -110,7 +110,7 @@ public class MainWindow {
 				btnStopMappingClicked();
 			}
 		});
-		btnStopMapping.setBounds(515, 173, 149, 40);
+		btnStopMapping.setBounds(515, 224, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStopMapping);
 		
 		JButton btnStartMapping = new JButton("Start Mapping");
@@ -120,12 +120,8 @@ public class MainWindow {
 				btnStartMappingClicked();
 			}
 		});
-		btnStartMapping.setBounds(515, 122, 149, 40);
+		btnStartMapping.setBounds(515, 173, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStartMapping);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(515, 109, 149, 2);
-		frmUniversalupnp.getContentPane().add(separator_1);
 		
 		JButton btnShowIP = new JButton("Show External IP");
 		btnShowIP.addActionListener(new ActionListener() {
@@ -136,6 +132,20 @@ public class MainWindow {
 		btnShowIP.setToolTipText("Shows your external IP address.");
 		btnShowIP.setBounds(515, 320, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnShowIP);
+		
+		JButton btnEditMapping = new JButton("Edit Mapping");
+		btnEditMapping.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnEditMappingClicked();
+			}
+		});
+		btnEditMapping.setToolTipText("Edit the selected entry.");
+		btnEditMapping.setBounds(515, 58, 149, 40);
+		frmUniversalupnp.getContentPane().add(btnEditMapping);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setBounds(515, 160, 149, 2);
+		frmUniversalupnp.getContentPane().add(separator_2);
 		
 		// Right-click context menu
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -301,6 +311,24 @@ public class MainWindow {
 		inputForm.dispose();
 	}
 	
+	private void btnEditMappingClicked() {
+		int selectedIndex = table.getSelectedRow();
+		if (selectedIndex == -1)
+			return;
+		
+		MappingEntry entry = Main.DATA.getEntry(selectedIndex);
+		MappingInputForm inputForm = new MappingInputForm(frmUniversalupnp, entry);
+		inputForm.setVisible(true);
+		
+		if (inputForm.okClose) {
+			Main.DATA.deleteEntry(selectedIndex);
+			Main.DATA.addEntry(new MappingEntry(inputForm.name, inputForm.ports));
+			Main.LOGGER.log(LogSeverity.INFO, "Edit finished.");
+			refreshTable();
+		}
+		inputForm.dispose();
+	}
+	
 	private void btnDeleteMappingClicked() {
 		int selectedIndex = table.getSelectedRow();
 		if (selectedIndex == -1)
@@ -324,6 +352,7 @@ public class MainWindow {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				StringSelection selection = new StringSelection(externalIP);
 				clipboard.setContents(selection, null);
+				Main.LOGGER.log(LogSeverity.INFO, "Copied external IP address to clipboard.");
 			}
 		});
 		
@@ -332,6 +361,7 @@ public class MainWindow {
 				copyToClipboard
 		};
 		
+		Main.LOGGER.log(LogSeverity.INFO, "Showing external IP address.");
 		JOptionPane.showMessageDialog(frmUniversalupnp, message, "External IP", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

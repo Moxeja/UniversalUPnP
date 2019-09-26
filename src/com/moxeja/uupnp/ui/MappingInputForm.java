@@ -22,6 +22,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.Main;
+import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
 import com.moxeja.uupnp.datatypes.Protocols;
 
@@ -41,6 +44,10 @@ public class MappingInputForm extends JDialog {
 	public String name;
 
 	public MappingInputForm(JFrame parent) {
+		this(parent, null);
+	}
+	
+	public MappingInputForm(JFrame parent, MappingEntry entry) {
 		super(parent, true);
 		setResizable(false);
 		setTitle("Enter Mapping Details");
@@ -123,6 +130,23 @@ public class MappingInputForm extends JDialog {
 		});
 		btnCancel.setBounds(228, 271, 129, 40);
 		contentPane.add(btnCancel);
+		
+		if (entry != null) {
+			Main.LOGGER.log(LogSeverity.INFO, "Opened edit form.");
+			txtName.setText(entry.getName());
+			entry.getPorts().forEach((e) -> {
+				ports.add(e);
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				Object[] temp = null;
+				
+				if (e.portRange.x == e.portRange.y)
+					temp = new Object[] { e.portRange.x, e.protocol };
+				else
+					temp = new Object[] { e.portRange.x+"->"+e.portRange.y, e.protocol };
+					
+				model.addRow(temp);
+			});
+		}
 	}
 	
 	private void btnOkClicked() {
