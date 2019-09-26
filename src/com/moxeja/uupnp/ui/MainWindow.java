@@ -3,6 +3,9 @@ package com.moxeja.uupnp.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -27,6 +30,7 @@ import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
+import com.moxeja.uupnp.network.NetworkUtils;
 
 public class MainWindow {
 
@@ -106,7 +110,7 @@ public class MainWindow {
 				btnStopMappingClicked();
 			}
 		});
-		btnStopMapping.setBounds(515, 320, 149, 40);
+		btnStopMapping.setBounds(515, 173, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStopMapping);
 		
 		JButton btnStartMapping = new JButton("Start Mapping");
@@ -116,8 +120,22 @@ public class MainWindow {
 				btnStartMappingClicked();
 			}
 		});
-		btnStartMapping.setBounds(515, 269, 149, 40);
+		btnStartMapping.setBounds(515, 122, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStartMapping);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(515, 109, 149, 2);
+		frmUniversalupnp.getContentPane().add(separator_1);
+		
+		JButton btnShowIP = new JButton("Show External IP");
+		btnShowIP.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnShowIPClicked();
+			}
+		});
+		btnShowIP.setToolTipText("Shows your external IP address.");
+		btnShowIP.setBounds(515, 320, 149, 40);
+		frmUniversalupnp.getContentPane().add(btnShowIP);
 		
 		// Right-click context menu
 		JPopupMenu popupMenu = new JPopupMenu();
@@ -295,5 +313,25 @@ public class MainWindow {
 			Main.DATA.deleteEntry(selectedIndex);
 			refreshTable();
 		}
+	}
+	
+	private void btnShowIPClicked() {
+		String externalIP = NetworkUtils.getExternalIPAddress();
+		
+		JButton copyToClipboard = new JButton("Copy to Clipboard");
+		copyToClipboard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				StringSelection selection = new StringSelection(externalIP);
+				clipboard.setContents(selection, null);
+			}
+		});
+		
+		Object[] message = {
+				"External IP:    "+externalIP,
+				copyToClipboard
+		};
+		
+		JOptionPane.showMessageDialog(frmUniversalupnp, message, "External IP", JOptionPane.INFORMATION_MESSAGE);
 	}
 }
