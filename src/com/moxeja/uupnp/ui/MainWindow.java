@@ -196,6 +196,14 @@ public class MainWindow {
 		});
 		popupMenu.add(mntmAddMapping);
 		
+		JMenuItem mntmEditMapping = new JMenuItem("Edit Mapping");
+		mntmEditMapping.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				btnEditMappingClicked();
+			}
+		});
+		popupMenu.add(mntmEditMapping);
+		
 		JMenuItem mntmDeleteMapping = new JMenuItem("Delete Mapping");
 		mntmDeleteMapping.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
