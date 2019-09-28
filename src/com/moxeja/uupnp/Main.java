@@ -51,13 +51,6 @@ public class Main {
 			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
 		}
 		
-		// Program cannot be run in headless mode since it is GUI based
-		if (GraphicsEnvironment.isHeadless()) {
-			LOGGER.log(LogSeverity.FATAL, "Application cannot be run in headless mode.");
-			LOGGER.close();
-			System.exit(1);
-		}
-		
 		// Java 8 is the minimum required
 		if (getJavaVersion() < 8) {
 			LOGGER.log(LogSeverity.FATAL, "At least Java 8 is required to run this software.");
@@ -104,15 +97,28 @@ public class Main {
 			}
 		}
 		
-		// Start GUI
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new MainWindow();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		// Check if program is being run in CL mode
+		if (args.length > 0) {
+			LOGGER.log(LogSeverity.INFO, "Starting UUPnP in commandline mode.");
+			new NoGUI(args);
+			System.exit(0);
+		} else {
+			// Program cannot be run in headless mode since it is GUI based
+			if (GraphicsEnvironment.isHeadless()) {
+				LOGGER.log(LogSeverity.FATAL, "GUI mode cannot be started in a headless environment.");
+				System.exit(1);
 			}
-		});
+			
+			// Start GUI
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						new MainWindow();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}
 	}
 }

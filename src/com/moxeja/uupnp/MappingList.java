@@ -88,6 +88,13 @@ public class MappingList {
 		entries.get(id).stopUPnP();
 	}
 	
+	public void startAll() {
+		Main.LOGGER.log(LogSeverity.INFO, "Starting all UPnP services.");
+		for (int i = 0; i < entries.size(); i++) {
+			startEntry(i);
+		}
+	}
+	
 	public void stopAll() {
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
 		LinkedList<Thread> threads = new LinkedList<Thread>();
@@ -106,5 +113,9 @@ public class MappingList {
 				thread.join();
 			} catch (InterruptedException e1) {}
 		}
+	}
+	
+	public boolean isEmpty() {
+		return entries.isEmpty();
 	}
 }

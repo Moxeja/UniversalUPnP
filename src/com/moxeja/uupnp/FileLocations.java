@@ -24,7 +24,7 @@ public class FileLocations {
 	private static final String APP_DIR = "UniversalUPnP";
 	private static final String WARN_FILENAME = "disable-warning";
 	
-	private static String getWorkingDir() {
+	public static String getWorkingDir() {
 		// user.home works on all OS so use it as backup
 		Path temp;
 		if (OSNAME == OSType.Windows) {
