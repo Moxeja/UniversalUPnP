@@ -9,6 +9,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
@@ -69,7 +71,7 @@ public class MappingEntry {
 		
 		// Get local IP and handle multiple network interfaces
 		Main.LOGGER.log(LogSeverity.INFO, "Finding all network interfaces...");
-		ArrayList<String> addresses = new ArrayList<String>();
+		LinkedHashMap<String, InetAddress> addresses = new LinkedHashMap<String, InetAddress>();
 		for (NetworkInterface ni : Collections.list(NetworkInterface.getNetworkInterfaces())) {
 			if (ni.isLoopback() || !ni.isUp())
 				continue;
@@ -78,7 +80,7 @@ public class MappingEntry {
 				if (!(address instanceof Inet4Address))
 					continue;
 				Main.LOGGER.log(LogSeverity.FOLLOW, "Found interface with IP: "+address.getHostAddress());
-				addresses.add(address.getHostAddress());
+				addresses.put(address.getHostAddress()+" ["+ni.getDisplayName()+"]", address);
 			}
 		}
 		
@@ -91,8 +93,8 @@ public class MappingEntry {
 		String selectedIP = null;
 		if (parent != null) {
 			// Ask user what IP they want to use
-			String[] ips = new String[addresses.size()];
-			ips = addresses.toArray(ips);
+			Set<String> fullnames = addresses.keySet();
+			String[] ips = fullnames.toArray(new String[fullnames.size()]);
 			JComboBox<String> cboIP = new JComboBox<String>(ips);
 			Object[] message = {
 					"IP to bind ports to:",
@@ -104,11 +106,12 @@ public class MappingEntry {
 				throw new Exception("IP binding dialog cancelled.");
 			}
 			
-			selectedIP = cboIP.getSelectedItem().toString();
+			selectedIP = addresses.get(cboIP.getSelectedItem()).getHostAddress();
 		}
 		
 		// Set selected IP to use with ports
-		String internalIP = (parent != null && selectedIP != null) ? selectedIP : addresses.get(0);
+		InetAddress defaultIP = addresses.values().iterator().next();
+		String internalIP = (parent != null && selectedIP != null) ? selectedIP : defaultIP.getHostAddress();
 		Main.LOGGER.log(LogSeverity.INFO, "Binding ports to IP: "+internalIP);
 		
 		// Setup portmapping to use with upnpservice
