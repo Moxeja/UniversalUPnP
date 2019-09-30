@@ -13,4 +13,4 @@
  Alternatively, add the project as a Maven project to an IDE, and build with the "package" goal.
 
 # Known Issues
-* All network adapters except the main one need to be disabled for the application to use the right one.
+* None

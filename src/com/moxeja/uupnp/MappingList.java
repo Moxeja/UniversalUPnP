@@ -1,5 +1,6 @@
 package com.moxeja.uupnp;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -51,7 +52,7 @@ public class MappingList {
 		return entries.get(id);
 	}
 	
-	public void startEntry(int id) {
+	public void startEntry(int id, Component parent) {
 		if (id > entries.size() || id < 0)
 			return;
 		
@@ -63,7 +64,7 @@ public class MappingList {
 		}
 		
 		try {
-			entries.get(id).startUPnP();
+			entries.get(id).startUPnP(parent);
 		} catch (Exception e) {
 			Main.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
 			for (PortInfo port : temp.getPorts()) {
@@ -91,7 +92,7 @@ public class MappingList {
 	public void startAll() {
 		Main.LOGGER.log(LogSeverity.INFO, "Starting all UPnP services.");
 		for (int i = 0; i < entries.size(); i++) {
-			startEntry(i);
+			startEntry(i, null);
 		}
 	}
 	

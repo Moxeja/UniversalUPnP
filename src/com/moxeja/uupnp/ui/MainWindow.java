@@ -301,7 +301,7 @@ public class MainWindow {
 		if (selectedIndex == -1)
 			return;
 		
-		Main.DATA.startEntry(selectedIndex);
+		Main.DATA.startEntry(selectedIndex, frmUniversalupnp);
 		refreshTable();
 	}
 	
