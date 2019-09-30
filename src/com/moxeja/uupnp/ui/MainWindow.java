@@ -50,6 +50,7 @@ public class MainWindow {
 	/**
 	 * Initialise the contents of the frame.
 	 */
+	@SuppressWarnings("serial")
 	private void initialize() {
 		frmUniversalupnp = new JFrame();
 		frmUniversalupnp.setVisible(true);
@@ -90,7 +91,12 @@ public class MainWindow {
 		frmUniversalupnp.getContentPane().add(scrollPane);
 		
 		String col[] = {"Name", "Ports", "Protocol", "Running"};
-		tablemodel = new DefaultTableModel(col, 0);
+		tablemodel = new DefaultTableModel(col, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
 		
 		table = new JTable(tablemodel);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
