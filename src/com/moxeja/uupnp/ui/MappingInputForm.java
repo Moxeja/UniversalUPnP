@@ -28,9 +28,8 @@ import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
 import com.moxeja.uupnp.datatypes.Protocols;
 
+@SuppressWarnings("serial")
 public class MappingInputForm extends JDialog {
-
-	private static final long serialVersionUID = 1686107614644209666L;
 	
 	private JPanel contentPane;
 	private JTable table;
@@ -67,13 +66,13 @@ public class MappingInputForm extends JDialog {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"Ports", "Protocol"
+		String[] col = { "Ports", "Protocol" };
+		table.setModel(new DefaultTableModel(col, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
 			}
-		));
+		});
 		scrollPane.setViewportView(table);
 		
 		JButton btnAddPort = new JButton("Add Port");

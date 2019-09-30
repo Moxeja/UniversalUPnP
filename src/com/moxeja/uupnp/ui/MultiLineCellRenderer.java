@@ -10,9 +10,8 @@ import javax.swing.table.DefaultTableCellRenderer;
  * Link: https://stackoverflow.com/users/6256451/marcel
  */
 
+@SuppressWarnings("serial")
 public class MultiLineCellRenderer extends DefaultTableCellRenderer {
-
-	private static final long serialVersionUID = -7003394650358198030L;
 
 	@Override
 	public Component getTableCellRendererComponent(JTable table,
