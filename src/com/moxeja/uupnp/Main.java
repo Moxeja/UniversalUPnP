@@ -22,7 +22,7 @@ import com.moxeja.uupnp.ui.MainWindow;
 public class Main {
 	
 	public static Logger LOGGER;
-	public static final String VERSION = "V1.5";
+	public static final String VERSION = "V1.6";
 	public static MappingList DATA;
 	
 	private static int getJavaVersion() {
