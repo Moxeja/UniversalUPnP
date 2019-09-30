@@ -13,4 +13,4 @@
  Alternatively, add the project as a Maven project to an IDE, and build with the "package" goal.
 
 # Known Issues
-* None
+* [SERIOUS] In command line mode, if the user closes the console before stopping the mappings, the ports will remain open.

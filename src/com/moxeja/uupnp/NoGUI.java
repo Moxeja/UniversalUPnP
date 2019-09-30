@@ -59,7 +59,8 @@ public class NoGUI {
 				return;
 			} else {
 				Main.DATA.startAll();
-				Main.LOGGER.log(LogSeverity.INFO, "Type stop, quit, exit or q to stop the mappings.");
+				Main.LOGGER.log(LogSeverity.INFO, "Type stop, quit, exit or q to stop the mappings.\n"
+						+ "IMPORTANT: Make sure to NOT close the console before stopping the mappings or ports WON'T be closed!");
 				
 				boolean stop = false;
 				Scanner scanner = new Scanner(System.in);
