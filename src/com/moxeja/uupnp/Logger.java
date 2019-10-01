@@ -46,7 +46,7 @@ public class Logger {
 		System.out.println("Java version: "+System.getProperty("java.version"));
 	}
 	
-	public void log(LogSeverity severity, String message) {
+	public synchronized void log(LogSeverity severity, String message) {
 		String timestamp = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss").format(System.currentTimeMillis());
 		
 		switch(severity) {
