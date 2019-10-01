@@ -50,7 +50,7 @@ public class MainWindow {
 		Thread updater = new Thread(() -> {
 			Main.LOGGER.log(LogSeverity.INFO, "Checking for updates.");
 			boolean update = NetworkUtils.needsUpdate(Main.VERSION);
-			Main.LOGGER.log(LogSeverity.INFO, "New version available?: "+update);
+			Main.LOGGER.log(LogSeverity.INFO, "Update available: "+update);
 			
 			if (update) {
 				String url = "https://github.com/Moxeja/UniversalUPnP/releases";

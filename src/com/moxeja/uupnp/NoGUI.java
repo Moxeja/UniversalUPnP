@@ -8,6 +8,7 @@ import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
 import com.moxeja.uupnp.datatypes.Protocols;
+import com.moxeja.uupnp.network.NetworkUtils;
 
 public class NoGUI {
 
@@ -37,6 +38,10 @@ public class NoGUI {
 	}
 	
 	public NoGUI(String[] args) {
+		Main.LOGGER.log(LogSeverity.INFO, "Checking for updates...");
+		boolean update = NetworkUtils.needsUpdate(Main.VERSION);
+		Main.LOGGER.log(LogSeverity.INFO, "Update available: "+update);
+		
 		Commands command = parseArg(args[0]);
 		if (command == Commands.Unknown) {
 			Main.LOGGER.log(LogSeverity.FATAL, "Unknown argument: " + args[0]);
