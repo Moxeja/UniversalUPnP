@@ -76,7 +76,6 @@ public class NetworkUtils {
 						reader.close();
 					} catch (IOException e) {
 						e.printStackTrace();
-						return false;
 					}
 				}
 			}
