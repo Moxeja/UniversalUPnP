@@ -45,6 +45,33 @@ public class MainWindow {
 		Main.LOGGER.log(LogSeverity.INFO, "Initialising window.");
 		initialize();
 		frmUniversalupnp.setVisible(true);
+		
+		// Start updater thread
+		Thread updater = new Thread(() -> {
+			Main.LOGGER.log(LogSeverity.INFO, "Checking for updates.");
+			boolean update = NetworkUtils.needsUpdate(Main.VERSION);
+			Main.LOGGER.log(LogSeverity.INFO, "New version available?: "+update);
+			
+			if (update) {
+				String url = "https://github.com/Moxeja/UniversalUPnP/releases";
+				JButton copyToClipboard = new JButton("Copy URL to Clipboard");
+				copyToClipboard.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+						StringSelection selection = new StringSelection(url);
+						clipboard.setContents(selection, null);
+					}
+				});
+				
+				Object[] message = {
+						"An update is available at: "+url,
+						copyToClipboard
+				};
+				
+				JOptionPane.showMessageDialog(frmUniversalupnp, message, "Update Found!", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		updater.start();
 	}
 
 	/**
@@ -56,7 +83,7 @@ public class MainWindow {
 		frmUniversalupnp.setVisible(true);
 		frmUniversalupnp.setSize(new Dimension(680, 400));
 		frmUniversalupnp.setResizable(false);
-		frmUniversalupnp.setTitle("UniversalUPnP "+Main.VERSION);
+		frmUniversalupnp.setTitle("UniversalUPnP V"+Main.VERSION);
 		frmUniversalupnp.setBounds(100, 100, 680, 400);
 		frmUniversalupnp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUniversalupnp.getContentPane().setLayout(null);
@@ -360,7 +387,7 @@ public class MainWindow {
 	private void btnShowIPClicked() {
 		String externalIP = NetworkUtils.getExternalIPAddress();
 		
-		JButton copyToClipboard = new JButton("Copy to Clipboard");
+		JButton copyToClipboard = new JButton("Copy IP to Clipboard");
 		copyToClipboard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
