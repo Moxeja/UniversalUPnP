@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
@@ -93,8 +92,7 @@ public class MappingEntry {
 		String selectedIP = null;
 		if (parent != null) {
 			// Ask user what IP they want to use
-			Set<String> fullnames = addresses.keySet();
-			String[] ips = fullnames.toArray(new String[fullnames.size()]);
+			String[] ips = addresses.keySet().toArray(new String[addresses.size()]);
 			JComboBox<String> cboIP = new JComboBox<String>(ips);
 			Object[] message = {
 					"IP to bind ports to:",
