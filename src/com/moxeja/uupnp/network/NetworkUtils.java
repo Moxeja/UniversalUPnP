@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.StringTokenizer;
 
 public class NetworkUtils {
@@ -14,9 +15,13 @@ public class NetworkUtils {
 			URL ipchecker = new URL("https://checkip.amazonaws.com");
 			BufferedReader reader = null;
 			try {
-				reader = new BufferedReader(new InputStreamReader(ipchecker.openStream()));
+				// Open connection and read data
+				URLConnection con = ipchecker.openConnection();
+				con.setConnectTimeout(4000);
+				con.setReadTimeout(3000);
+				reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 				return reader.readLine();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "0.0.0.0";
 			} finally {
@@ -35,10 +40,12 @@ public class NetworkUtils {
 	}
 	
 	private static boolean onlineVersionNewer(String currentVersion, String webVersion) {
+		// Tokenize both strings
 		final String delimiter = ".";
 		StringTokenizer stCurrent = new StringTokenizer(currentVersion, delimiter);
 		StringTokenizer stWeb = new StringTokenizer(webVersion, delimiter);
 		
+		// Check if webVersion is newer than currentVersion
 		while (stCurrent.hasMoreTokens()) {
 			if (stWeb.hasMoreTokens()) {
 				int currentInt = Integer.parseInt(stCurrent.nextToken());
@@ -60,14 +67,18 @@ public class NetworkUtils {
 	public static boolean needsUpdate(String currentVersion) {
 		String webVersion = null;
 		
-		// Retrieve online version number
 		try {
-			URL versionChecker = new URL("https://moxeja.github.io/uupnp-version");
+			// Retrieve online version number
+			URL versionChecker = new URL("https://moxeja.github.io/app-versions/uupnp-version");
 			BufferedReader reader = null;
 			try {
-				reader = new BufferedReader(new InputStreamReader(versionChecker.openStream()));
+				// Open connection and read data
+				URLConnection con = versionChecker.openConnection();
+				con.setConnectTimeout(4000);
+				con.setReadTimeout(3000);
+				reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
 				webVersion = reader.readLine();
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return false;
 			} finally {
