@@ -3,6 +3,8 @@
  Uses GSON, Cling and Seamless libraries from https://github.com/google/gson, https://github.com/4thline/cling and
 	https://github.com/4thline/seamless respectively.
 
+ Requires Java 8 or later.
+
 # Building
  To build, use:
  ``` shell

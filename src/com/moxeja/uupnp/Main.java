@@ -24,17 +24,6 @@ public class Main {
 	public static Logger LOGGER;
 	public static final String VERSION = "1.7.2";
 	public static MappingList DATA;
-	
-	private static int getJavaVersion() {
-		String version = System.getProperty("java.version");
-		if (version.startsWith("1.")) {
-			version = version.substring(2, 3);
-		} else {
-			int dot = version.indexOf(".");
-			if (dot != -1) { version = version.substring(0, dot); }
-		}
-		return Integer.parseInt(version);
-	}
 
 	public static void main(String[] args) {
 		// Setup logging
@@ -49,13 +38,6 @@ public class Main {
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 			LOGGER.log(LogSeverity.WARN, "Could not redirect error stream to file.");
-		}
-		
-		// Java 8 is the minimum required
-		if (getJavaVersion() < 8) {
-			LOGGER.log(LogSeverity.FATAL, "At least Java 8 is required to run this software.");
-			LOGGER.close();
-			System.exit(1);
 		}
 		
 		// Add shutdown hook to ensure data gets written and finalised
