@@ -324,12 +324,17 @@ public class MainWindow {
 	}
 	
 	private void btnStartMappingClicked() {
+		// Check if any row is selected
 		int selectedIndex = table.getSelectedRow();
 		if (selectedIndex == -1)
 			return;
 		
-		Main.DATA.startEntry(selectedIndex, frmUniversalupnp);
-		refreshTable();
+		try {
+			Main.DATA.startEntry(selectedIndex, frmUniversalupnp);
+			refreshTable();
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Cannot start entry! Invalid index specified: " + selectedIndex);
+		}
 	}
 	
 	private void btnStopMappingClicked() {

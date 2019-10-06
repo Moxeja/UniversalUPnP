@@ -5,7 +5,6 @@ import java.awt.Point;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -62,7 +61,7 @@ public class MappingEntry {
 	}
 	
 	// TODO: Allow IP selection in command line mode
-	public void startUPnP(Component parent) throws Exception, UnknownHostException {
+	public void startUPnP(Component parent) throws Exception {
 		if (upnpservice != null) {
 			running = true;
 			return;
