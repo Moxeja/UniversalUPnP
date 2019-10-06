@@ -14,7 +14,9 @@ public class NoGUI {
 
 	private enum Commands {
 		Create,
+		List,
 		Start,
+		StartAll,
 		Stop,
 		Unknown
 	}
@@ -27,11 +29,17 @@ public class NoGUI {
 		case "-start":
 		case "--start":
 			return Commands.Start;
+		case "-startall":
+		case "--startall":
+			return Commands.StartAll;
 		case "stop":
 		case "quit":
 		case "exit":
 		case "q":
 			return Commands.Stop;
+		case "-list":
+		case "--list":
+			return Commands.List;
 		default:
 			return Commands.Unknown;
 		}
@@ -43,9 +51,8 @@ public class NoGUI {
 		Main.LOGGER.log(LogSeverity.INFO, "Update available: "+update);
 		
 		Commands command = parseArg(args[0]);
-		if (command == Commands.Unknown) {
-			Main.LOGGER.log(LogSeverity.FATAL, "Unknown argument: " + args[0]);
-			Main.LOGGER.log(LogSeverity.INFO, "Available arguments: -create, -start");
+		if (command == Commands.Unknown || command == Commands.Stop) {
+			Main.LOGGER.log(LogSeverity.INFO, "Available arguments: -list, -create, -startall, -start <entry-index>");
 			return;
 		}
 		
@@ -57,30 +64,58 @@ public class NoGUI {
 			
 			Main.LOGGER.log(LogSeverity.INFO, "A template file will be created at: " + FileLocations.getWorkingDir());
 			Main.DATA.addEntry(new MappingEntry("Template Entry", templatePorts));
-			return;
-		} else if (command == Commands.Start) {	// Start all mappings from entries file
+		} else if (command == Commands.StartAll) {	// Start all mappings from entries file
 			if (Main.DATA.isEmpty()) {
 				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file.");
 				return;
-			} else {
-				Main.DATA.startAll();
-				Main.LOGGER.log(LogSeverity.INFO, "Type stop, quit, exit or q to stop the mappings.\n"
-						+ "IMPORTANT: Make sure to NOT close the console before stopping the mappings or ports WON'T be closed!");
-				
-				boolean stop = false;
-				Scanner scanner = new Scanner(System.in);
-				do {
-					String input = scanner.next();
-					if (parseArg(input) == Commands.Stop) {
-						stop = true;
-					}
-				} while (!stop);
-				scanner.close();
+			}
+			
+			Main.DATA.startAll();
+			blockUntilClose();
+		} else if (command == Commands.Start) {
+			if (Main.DATA.isEmpty()) {
+				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file.");
+				return;
+			} else if (args.length != 2) {
+				Main.LOGGER.log(LogSeverity.FATAL, "Incorrect -start usage! Should be: -start <entry-index>");
 				return;
 			}
-		} else {
-			Main.LOGGER.log(LogSeverity.FATAL, "Available arguments: -create, -start");
-			return;
+			
+			// Start entry specified by user
+			try {
+				int index = Integer.parseInt(args[1]);
+				Main.DATA.startEntry(index, null);
+				blockUntilClose();
+			} catch (NumberFormatException e) {
+				Main.LOGGER.log(LogSeverity.FATAL, "Could not convert argument to integer! Argument: " + args[1]);
+				return;
+			} catch (ArrayIndexOutOfBoundsException e2) {
+				Main.LOGGER.log(LogSeverity.FATAL, "Invalid entry-index specified: " + args[1]);
+				return;
+			}
+		} else if (command == Commands.List) {
+			Main.LOGGER.log(LogSeverity.INFO, "Current entries:");
+			for (int i = 0; i < Main.DATA.getSize(); i++) {
+				MappingEntry entry = Main.DATA.getEntry(i);
+				Main.LOGGER.log(LogSeverity.INFO, String.format("\tIndex: %d, Name: %s", i, entry.getName()));
+			}
 		}
+	}
+	
+	private void blockUntilClose() {
+		// Warn user about closing issue
+		Main.LOGGER.log(LogSeverity.INFO, "Type stop, quit, exit or q to stop the mappings.\n"
+				+ "IMPORTANT: Make sure to NOT close the console before stopping the mappings or ports WON'T be closed!");
+		
+		// Wait for user to input any of the stop values
+		Scanner scanner = new Scanner(System.in);
+		boolean stop = false;
+		while (!stop) {
+			String input = scanner.next();
+			if (parseArg(input) == Commands.Stop) {
+				stop = true;
+			}
+		}
+		scanner.close();
 	}
 }

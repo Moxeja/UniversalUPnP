@@ -16,6 +16,10 @@ public class MappingList {
 		return entries;
 	}
 	
+	public int getSize() {
+		return entries.size();
+	}
+	
 	public void addEntry(MappingEntry entry) {
 		if (entry != null) {
 			Main.LOGGER.log(LogSeverity.INFO, "Creating new mapping.");
@@ -52,9 +56,9 @@ public class MappingList {
 		return entries.get(id);
 	}
 	
-	public void startEntry(int id, Component parent) {
-		if (id > entries.size() || id < 0)
-			return;
+	public void startEntry(int id, Component parent) throws ArrayIndexOutOfBoundsException {
+		if (id > (entries.size()-1) || id < 0)
+			throw new ArrayIndexOutOfBoundsException();
 		
 		Main.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
 		MappingEntry temp = entries.get(id);
@@ -92,7 +96,9 @@ public class MappingList {
 	public void startAll() {
 		Main.LOGGER.log(LogSeverity.INFO, "Starting all UPnP services.");
 		for (int i = 0; i < entries.size(); i++) {
-			startEntry(i, null);
+			try {
+				startEntry(i, null);
+			} catch (ArrayIndexOutOfBoundsException e) {}
 		}
 	}
 	
