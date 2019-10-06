@@ -17,4 +17,4 @@
 
 # Known Issues
 * [SERIOUS] In command line mode, if the user closes the console before stopping the mappings, the ports will remain open.
-	* To fix: start the program in command line mode again (-start switch) and stop the mappings properly.
+	* To fix: start the program in command line mode again (-startall switch) and stop the mappings properly.
