@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.input.CloseShieldInputStream;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.support.igd.PortMappingListener;
@@ -60,7 +62,6 @@ public class MappingEntry {
 		return running;
 	}
 	
-	// TODO: Allow IP selection in command line mode
 	public void startUPnP(Component parent) throws Exception {
 		if (upnpservice != null) {
 			running = true;
@@ -89,9 +90,9 @@ public class MappingEntry {
 		}
 		
 		String selectedIP = null;
+		// Ask user what IP they want to use
+		String[] ips = addresses.keySet().toArray(new String[addresses.size()]);
 		if (parent != null) {
-			// Ask user what IP they want to use
-			String[] ips = addresses.keySet().toArray(new String[addresses.size()]);
 			JComboBox<String> cboIP = new JComboBox<String>(ips);
 			Object[] message = {
 					"IP to bind ports to:",
@@ -104,11 +105,35 @@ public class MappingEntry {
 			}
 			
 			selectedIP = addresses.get(cboIP.getSelectedItem()).getHostAddress();
+		} else {
+			// Print available IPs
+			Main.LOGGER.log(LogSeverity.INFO, "Which of the following IPs should the ports be binded to?:");
+			for (int i = 0; i < ips.length; i++) {
+				Main.LOGGER.log(LogSeverity.INFO, String.format("%d: %s", i, ips[i]));
+			}
+			
+			// Get user selection
+			Scanner scanner = new Scanner(new CloseShieldInputStream(System.in));
+			int selection = -1;
+			while (selection == -1) {
+				try {
+					int userSelection = Integer.parseInt(scanner.nextLine());
+					if (userSelection >= 0 && userSelection <= (ips.length-1)) {
+						selection = userSelection;
+					} else {
+						Main.LOGGER.log(LogSeverity.INFO, "No entry with that index.");
+					}
+				} catch (NumberFormatException e) {
+					Main.LOGGER.log(LogSeverity.INFO, "Invalid number.");
+				}
+			}
+			scanner.close();
+			
+			selectedIP = addresses.get(ips[selection]).getHostAddress();
 		}
 		
 		// Set selected IP to use with ports
-		InetAddress defaultIP = addresses.values().iterator().next();
-		String internalIP = (parent != null && selectedIP != null) ? selectedIP : defaultIP.getHostAddress();
+		String internalIP = selectedIP;
 		Main.LOGGER.log(LogSeverity.INFO, "Binding ports to IP: "+internalIP);
 		
 		// Setup portmapping to use with upnpservice

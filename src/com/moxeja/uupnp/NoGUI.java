@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.apache.commons.io.input.CloseShieldInputStream;
+
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
@@ -108,7 +110,7 @@ public class NoGUI {
 				+ "IMPORTANT: Make sure to NOT close the console before stopping the mappings or ports WON'T be closed!");
 		
 		// Wait for user to input any of the stop values
-		Scanner scanner = new Scanner(System.in);
+		Scanner scanner = new Scanner(new CloseShieldInputStream(System.in));
 		boolean stop = false;
 		while (!stop) {
 			String input = scanner.next();
