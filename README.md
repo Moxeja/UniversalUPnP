@@ -1,7 +1,8 @@
 # UniversalUPnP
- A client to allow users to create UPnP mappings manually.
- Uses GSON, Cling and Seamless libraries from https://github.com/google/gson, https://github.com/4thline/cling and
-	https://github.com/4thline/seamless respectively.
+ A client to allow users to create UPnP mappings manually Click [here](https://github.com/Moxeja/UniversalUPnP/wiki) to see how to use the software.
+ 
+ Uses GSON, apache-commons-io, Cling and Seamless libraries from https://github.com/google/gson, https://github.com/apache/commons-io,
+ https://github.com/4thline/cling and https://github.com/4thline/seamless respectively.
 
  Requires Java 8 or later.
 
