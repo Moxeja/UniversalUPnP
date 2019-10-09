@@ -98,8 +98,10 @@ public class NoGUI {
 		} else if (command == Commands.List) {
 			Main.LOGGER.log(LogSeverity.INFO, "Current entries:");
 			for (int i = 0; i < Main.DATA.getSize(); i++) {
-				MappingEntry entry = Main.DATA.getEntry(i);
-				Main.LOGGER.log(LogSeverity.INFO, String.format("\tIndex: %d, Name: %s", i, entry.getName()));
+				try {
+					MappingEntry entry = Main.DATA.getEntry(i);
+					Main.LOGGER.log(LogSeverity.INFO, String.format("\tIndex: %d, Name: %s", i, entry.getName()));
+				} catch (ArrayIndexOutOfBoundsException e) {}
 			}
 		}
 	}
