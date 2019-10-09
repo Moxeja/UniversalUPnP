@@ -32,9 +32,9 @@ public class MappingList {
 		}
 	}
 	
-	public void deleteEntry(int id) {
-		if (id > entries.size() || id < 0)
-			return;
+	public void deleteEntry(int id) throws ArrayIndexOutOfBoundsException {
+		if (id >= entries.size() || id < 0)
+			throw new ArrayIndexOutOfBoundsException();
 		
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		entries.get(id).stopUPnP();
@@ -49,15 +49,15 @@ public class MappingList {
 		entries.remove(id);
 	}
 	
-	public MappingEntry getEntry(int id) {
-		if (id > entries.size() || id < 0)
-			return null;
+	public MappingEntry getEntry(int id) throws ArrayIndexOutOfBoundsException {
+		if (id >= entries.size() || id < 0)
+			throw new ArrayIndexOutOfBoundsException();
 		
 		return entries.get(id);
 	}
 	
 	public void startEntry(int id, Component parent) throws ArrayIndexOutOfBoundsException {
-		if (id > (entries.size()-1) || id < 0)
+		if (id >= entries.size() || id < 0)
 			throw new ArrayIndexOutOfBoundsException();
 		
 		Main.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
@@ -79,9 +79,9 @@ public class MappingList {
 		}
 	}
 	
-	public void stopEntry(int id) {
-		if (id > entries.size() || id < 0)
-			return;
+	public void stopEntry(int id) throws ArrayIndexOutOfBoundsException {
+		if (id >= entries.size() || id < 0)
+			throw new ArrayIndexOutOfBoundsException();
 		
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		MappingEntry temp = entries.get(id);

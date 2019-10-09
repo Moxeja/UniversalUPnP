@@ -342,8 +342,10 @@ public class MainWindow {
 		if (selectedIndex == -1)
 			return;
 		
-		Main.DATA.stopEntry(selectedIndex);
-		refreshTable();
+		try {
+			Main.DATA.stopEntry(selectedIndex);
+			refreshTable();
+		} catch (ArrayIndexOutOfBoundsException e) {}
 	}
 	
 	private void btnAddMappingClicked() {
@@ -362,17 +364,21 @@ public class MainWindow {
 		if (selectedIndex == -1)
 			return;
 		
-		MappingEntry entry = Main.DATA.getEntry(selectedIndex);
-		MappingInputForm inputForm = new MappingInputForm(frmUniversalupnp, entry);
-		inputForm.setVisible(true);
-		
-		if (inputForm.okClose) {
-			Main.DATA.deleteEntry(selectedIndex);
-			Main.DATA.addEntry(new MappingEntry(inputForm.name, inputForm.ports));
-			Main.LOGGER.log(LogSeverity.INFO, "Edit finished.");
-			refreshTable();
+		try {
+			MappingEntry entry = Main.DATA.getEntry(selectedIndex);
+			MappingInputForm inputForm = new MappingInputForm(frmUniversalupnp, entry);
+			inputForm.setVisible(true);
+			
+			if (inputForm.okClose) {
+				Main.DATA.deleteEntry(selectedIndex);
+				Main.DATA.addEntry(new MappingEntry(inputForm.name, inputForm.ports));
+				Main.LOGGER.log(LogSeverity.INFO, "Edit finished.");
+				refreshTable();
+			}
+			inputForm.dispose();
+		} catch (ArrayIndexOutOfBoundsException e) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Failed to edit entry.");
 		}
-		inputForm.dispose();
 	}
 	
 	private void btnDeleteMappingClicked() {
@@ -384,8 +390,12 @@ public class MainWindow {
 		int option = JOptionPane.showConfirmDialog(frmUniversalupnp, "Are you sure you want to delete an entry?", 
 				"Delete Entry", JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
-			Main.DATA.deleteEntry(selectedIndex);
-			refreshTable();
+			try {
+				Main.DATA.deleteEntry(selectedIndex);
+				refreshTable();
+			} catch (ArrayIndexOutOfBoundsException e) {
+				Main.LOGGER.log(LogSeverity.ERROR, "Failed to delete entry.");
+			}
 		}
 	}
 	
