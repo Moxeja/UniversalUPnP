@@ -49,13 +49,18 @@ public class NetworkUtils {
 		// Check if webVersion is newer than currentVersion
 		while (stCurrent.hasMoreTokens()) {
 			if (stWeb.hasMoreTokens()) {
-				int currentInt = Integer.parseInt(stCurrent.nextToken());
-				int webInt = Integer.parseInt(stWeb.nextToken());
-				
-				if (currentInt > webInt) {
+				try {
+					int currentInt = Integer.parseInt(stCurrent.nextToken());
+					int webInt = Integer.parseInt(stWeb.nextToken());
+					
+					if (currentInt > webInt) {
+						return false;
+					} else if (webInt > currentInt) {
+						return true;
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
 					return false;
-				} else if (webInt > currentInt) {
-					return true;
 				}
 			} else {
 				return false;
