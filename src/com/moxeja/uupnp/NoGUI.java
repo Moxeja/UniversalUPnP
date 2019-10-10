@@ -24,6 +24,7 @@ public class NoGUI {
 	}
 	
 	private Commands parseArg(String arg) {
+		// Supported commands
 		switch (arg) {
 		case "-create":
 		case "--create":
@@ -58,7 +59,8 @@ public class NoGUI {
 			return;
 		}
 		
-		if (command == Commands.Create) {	// Create a template file for editing
+		if (command == Commands.Create) {
+			// Create a template file for editing
 			ArrayList<PortInfo> templatePorts = new ArrayList<PortInfo>();
 			templatePorts.add(new PortInfo(new Point(8080, 8080), Protocols.UDP));
 			templatePorts.add(new PortInfo(new Point(8081, 8085), Protocols.TCP));
@@ -66,7 +68,8 @@ public class NoGUI {
 			
 			Main.LOGGER.log(LogSeverity.INFO, "A template file will be created at: " + FileLocations.getWorkingDir());
 			Main.DATA.addEntry(new MappingEntry("Template Entry", templatePorts));
-		} else if (command == Commands.StartAll) {	// Start all mappings from entries file
+		} else if (command == Commands.StartAll) {
+			// Start all mappings from entries file
 			if (Main.DATA.isEmpty()) {
 				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file.");
 				return;
@@ -75,6 +78,7 @@ public class NoGUI {
 			Main.DATA.startAll();
 			blockUntilClose();
 		} else if (command == Commands.Start) {
+			// Check for valid arguments
 			if (Main.DATA.isEmpty()) {
 				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file.");
 				return;
@@ -96,6 +100,7 @@ public class NoGUI {
 				return;
 			}
 		} else if (command == Commands.List) {
+			// Print all entries loaded at startup from file
 			Main.LOGGER.log(LogSeverity.INFO, "Current entries:");
 			for (int i = 0; i < Main.DATA.getSize(); i++) {
 				try {

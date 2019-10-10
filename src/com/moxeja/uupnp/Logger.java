@@ -29,6 +29,8 @@ public class Logger {
 			e1.printStackTrace();
 		}
 		
+		// If a PrintWriter cannot be created, Logger is invalid and can only
+		// print to the System.out stream
 		try {
 			pw = new PrintWriter(new BufferedWriter(new FileWriter(filepath, true)));
 		} catch (IOException e) {

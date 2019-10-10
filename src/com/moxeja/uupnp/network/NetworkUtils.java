@@ -12,6 +12,7 @@ public class NetworkUtils {
 
 	public static String getExternalIPAddress() {
 		try {
+			// External IP address provider
 			URL ipchecker = new URL("https://checkip.amazonaws.com");
 			BufferedReader reader = null;
 			try {
