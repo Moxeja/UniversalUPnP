@@ -36,6 +36,7 @@ public class MappingList {
 		if (id >= entries.size() || id < 0)
 			throw new ArrayIndexOutOfBoundsException();
 		
+		// Stop mapping before deleting to make sure ports are closed
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		entries.get(id).stopUPnP();
 		
@@ -60,6 +61,7 @@ public class MappingList {
 		if (id >= entries.size() || id < 0)
 			throw new ArrayIndexOutOfBoundsException();
 		
+		// Print what ports are being opened
 		Main.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
@@ -83,6 +85,7 @@ public class MappingList {
 		if (id >= entries.size() || id < 0)
 			throw new ArrayIndexOutOfBoundsException();
 		
+		// Print what ports are being closed
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
 		MappingEntry temp = entries.get(id);
 		for (PortInfo port : temp.getPorts()) {
@@ -106,6 +109,7 @@ public class MappingList {
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping all UPnP services.");
 		LinkedList<Thread> threads = new LinkedList<Thread>();
 		
+		// Stop any running mappings in parallel
 		entries.forEach((e) -> {
 			if (e.isRunning()) {
 				threads.push(new Thread(() -> {
@@ -115,6 +119,7 @@ public class MappingList {
 			}
 		});
 		
+		// Ensure all threads have finished closing mappings
 		for (Thread thread : threads) {
 			try {
 				thread.join();

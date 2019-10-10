@@ -51,6 +51,7 @@ public class MappingInputForm extends JDialog {
 		setResizable(false);
 		setTitle("Enter Mapping Details");
 		
+		// Centre dialog in parent
 		int startX = parent.getX() + (parent.getWidth()/2 - width/2);
 		int startY = parent.getY() + (parent.getHeight()/2 - height/2);
 		setBounds(startX, startY, width, height);
@@ -130,6 +131,7 @@ public class MappingInputForm extends JDialog {
 		btnCancel.setBounds(228, 271, 129, 40);
 		contentPane.add(btnCancel);
 		
+		// If being used in edit mode
 		if (entry != null) {
 			Main.LOGGER.log(LogSeverity.INFO, "Opened edit form.");
 			txtName.setText(entry.getName());

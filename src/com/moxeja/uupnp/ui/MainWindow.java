@@ -54,6 +54,8 @@ public class MainWindow {
 			
 			if (update) {
 				String url = "https://github.com/Moxeja/UniversalUPnP/releases";
+				
+				// Allow copying link to clipboard
 				JButton copyToClipboard = new JButton("Copy URL to Clipboard");
 				copyToClipboard.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -302,6 +304,7 @@ public class MainWindow {
 		while (tablemodel.getRowCount() > 0)
 			tablemodel.removeRow(0);
 		
+		// Re-add entries to table
 		for (MappingEntry entry : Main.DATA.getEntryList()) {			
 			if (entry.getPorts() != null) {
 				StringBuilder sbPorts = new StringBuilder();
@@ -402,6 +405,7 @@ public class MainWindow {
 	private void btnShowIPClicked() {
 		String externalIP = NetworkUtils.getExternalIPAddress();
 		
+		// Allow copying IP address to clipboard
 		JButton copyToClipboard = new JButton("Copy IP to Clipboard");
 		copyToClipboard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

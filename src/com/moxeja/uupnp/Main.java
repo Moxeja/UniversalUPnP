@@ -33,6 +33,7 @@ public class Main {
 				+ "https://github.com/4thline/seamless respectively.");
 		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
+		// Cling only prints to System.err, so redirect to file
 		try {
 			System.setErr(new PrintStream(new BufferedOutputStream(new FileOutputStream(FileLocations.getLogFilename("uupnp-err-output")))));
 		} catch (FileNotFoundException e1) {
