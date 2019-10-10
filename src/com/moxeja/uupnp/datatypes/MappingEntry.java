@@ -22,6 +22,7 @@ import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.network.Protocols;
 import com.moxeja.uupnp.Main;
 
 public class MappingEntry {

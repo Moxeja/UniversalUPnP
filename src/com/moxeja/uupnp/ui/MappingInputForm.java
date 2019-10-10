@@ -26,7 +26,7 @@ import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
-import com.moxeja.uupnp.datatypes.Protocols;
+import com.moxeja.uupnp.network.Protocols;
 
 @SuppressWarnings("serial")
 public class MappingInputForm extends JDialog {

@@ -9,8 +9,8 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.datatypes.MappingEntry;
 import com.moxeja.uupnp.datatypes.PortInfo;
-import com.moxeja.uupnp.datatypes.Protocols;
 import com.moxeja.uupnp.network.NetworkUtils;
+import com.moxeja.uupnp.network.Protocols;
 
 public class NoGUI {
 
