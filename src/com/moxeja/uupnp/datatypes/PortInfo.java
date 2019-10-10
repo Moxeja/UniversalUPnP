@@ -2,6 +2,8 @@ package com.moxeja.uupnp.datatypes;
 
 import java.awt.Point;
 
+import com.moxeja.uupnp.network.Protocols;
+
 public class PortInfo {
 
 	public Point portRange;
