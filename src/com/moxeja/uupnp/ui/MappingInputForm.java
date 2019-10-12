@@ -52,9 +52,11 @@ public class MappingInputForm extends JDialog {
 		setTitle("Enter Mapping Details");
 		
 		// Centre dialog in parent
-		int startX = parent.getX() + (parent.getWidth()/2 - width/2);
-		int startY = parent.getY() + (parent.getHeight()/2 - height/2);
-		setBounds(startX, startY, width, height);
+		if (parent != null) {
+			int startX = parent.getX() + (parent.getWidth()/2 - width/2);
+			int startY = parent.getY() + (parent.getHeight()/2 - height/2);
+			setBounds(startX, startY, width, height);
+		}
 		
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		contentPane = new JPanel();
@@ -68,12 +70,7 @@ public class MappingInputForm extends JDialog {
 		
 		table = new JTable();
 		String[] col = { "Ports", "Protocol" };
-		table.setModel(new DefaultTableModel(col, 0) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		});
+		table.setModel(new NoCellEditableModel(col, 0));
 		scrollPane.setViewportView(table);
 		
 		JButton btnAddPort = new JButton("Add Port");
