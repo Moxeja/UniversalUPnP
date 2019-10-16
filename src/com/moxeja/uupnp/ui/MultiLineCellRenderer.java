@@ -1,14 +1,13 @@
+/*
+ * Author: Marcel
+ * Link: https://stackoverflow.com/users/6256451/marcel
+ */
 package com.moxeja.uupnp.ui;
 
 import java.awt.Component;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
-
-/*
- * Author: Marcel
- * Link: https://stackoverflow.com/users/6256451/marcel
- */
 
 @SuppressWarnings("serial")
 public class MultiLineCellRenderer extends DefaultTableCellRenderer {
