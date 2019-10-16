@@ -41,7 +41,7 @@ public class Main {
 	public static Logger LOGGER;
 	public static final String VERSION = "1.7.4";
 	public static MappingList DATA;
-	private static final String LINE_SEPERATOR = System.getProperty("line.separator");
+	public static final String LINE_SEPERATOR = System.getProperty("line.separator");
 
 	public static void main(String[] args) {
 		// Setup logging
