@@ -52,9 +52,9 @@ public class Main {
 				+ "\tunder certain conditions. For more information, view the LICENSE file%1$s"
 				+ "\tthat came with the binary file.", LINE_SEPERATOR));
 		
-		LOGGER.log(LogSeverity.INFO, "Uses GSON, Cling and Seamless libraries from "
-				+ "https://github.com/google/gson, https://github.com/4thline/cling and "
-				+ "https://github.com/4thline/seamless respectively.");
+		LOGGER.log(LogSeverity.INFO, String.format("Uses GSON, apache-commons-io, Cling and Seamless libraries from:%1$s"
+				+ "\thttps://github.com/google/gson, https://github.com/apache/commons-io,%1$s"
+				+ "\thttps://github.com/4thline/cling and https://github.com/4thline/seamless respectively.", LINE_SEPERATOR));
 		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
 		// Cling only prints to System.err, so redirect to file
