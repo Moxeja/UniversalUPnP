@@ -292,19 +292,27 @@ public class MainWindow {
 		}
 		
 		// Use JLabel html capabilities
-		String text = "<html><nobr>You <u>must</u> make sure to stop the UPnP mapping once you are finished with it!"
+		String license = "<html><nobr>UniversalUPnP  Copyright (C) 2019  Moxeja"
+				+ "<br>UniversalUPnP comes with <u>ABSOLUTELY NO WARRANTY</u>."
+				+ "<br>UniversalUPnP is free software, and you are welcome to redistribute it"
+				+ "<br>under certain conditions. For more information, view the LICENSE file"
+				+ "<br>that came with the binary file.</nobr></html>";
+		JLabel lblLicense = new JLabel(license);
+		JSeparator separator = new JSeparator(JSeparator.HORIZONTAL);
+		
+		String warning = "<html><nobr><u>WARNING</u>: You <u>must</u> make sure to stop the UPnP mapping once you are finished with it!"
 				+ "<br>Leaving ports open can be a big <u>security risk</u>!"
 				+ "<br>Closing the program will also close all ports opened by it this runtime.</nobr></html>";
-		JLabel label = new JLabel(text);
+		JLabel lblWarning = new JLabel(warning);
 		JCheckBox chkDisable = new JCheckBox("Disable Warning");
 		
 		Object[] message = {
-				label, chkDisable
+				lblLicense, separator, lblWarning, chkDisable
 		};
 		
 		// Show warning to user
 		Main.LOGGER.log(LogSeverity.INFO, "Showing warning to user.");
-		JOptionPane.showMessageDialog(frmUniversalupnp, message, "UPnP Warning", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(frmUniversalupnp, message, "Notice", JOptionPane.INFORMATION_MESSAGE);
 		
 		if (chkDisable.isSelected()) {
 			FileLocations.createWarningFile();
