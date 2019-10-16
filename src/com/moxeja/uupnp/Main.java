@@ -41,10 +41,17 @@ public class Main {
 	public static Logger LOGGER;
 	public static final String VERSION = "1.7.4";
 	public static MappingList DATA;
+	private static final String LINE_SEPERATOR = System.getProperty("line.separator");
 
 	public static void main(String[] args) {
 		// Setup logging
 		LOGGER = new Logger(FileLocations.getLogFilename("uupnp"));
+		LOGGER.log(LogSeverity.INFO, String.format("UniversalUPnP  Copyright (C) 2019  Moxeja%1$s"
+				+ "\tUniversalUPnP comes with ABSOLUTELY NO WARRANTY.%1$s"
+				+ "\tUniversalUPnP is free software, and you are welcome to redistribute it%1$s"
+				+ "\tunder certain conditions. For more information, view the LICENSE file%1$s"
+				+ "\tthat came with the binary file.", LINE_SEPERATOR));
+		
 		LOGGER.log(LogSeverity.INFO, "Uses GSON, Cling and Seamless libraries from "
 				+ "https://github.com/google/gson, https://github.com/4thline/cling and "
 				+ "https://github.com/4thline/seamless respectively.");
