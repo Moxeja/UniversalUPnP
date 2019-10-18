@@ -66,28 +66,33 @@ public class MainWindow {
 		// Start updater thread
 		Thread updater = new Thread(() -> {
 			Main.LOGGER.log(LogSeverity.INFO, "Checking for updates.");
-			boolean update = NetworkUtils.needsUpdate(Main.VERSION);
-			Main.LOGGER.log(LogSeverity.INFO, "Update available: "+update);
-			
-			if (update) {
-				String url = "https://github.com/Moxeja/UniversalUPnP/releases";
+			try {
+				boolean update = NetworkUtils.needsUpdate(Main.VERSION);
+				Main.LOGGER.log(LogSeverity.INFO, "Update available: "+update);
 				
-				// Allow copying link to clipboard
-				JButton copyToClipboard = new JButton("Copy URL to Clipboard");
-				copyToClipboard.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-						StringSelection selection = new StringSelection(url);
-						clipboard.setContents(selection, null);
-					}
-				});
-				
-				Object[] message = {
-						"An update is available at: "+url,
-						copyToClipboard
-				};
-				
-				JOptionPane.showMessageDialog(frmUniversalupnp, message, "Update Found!", JOptionPane.INFORMATION_MESSAGE);
+				if (update) {
+					String url = "https://github.com/Moxeja/UniversalUPnP/releases";
+					
+					// Allow copying link to clipboard
+					JButton copyToClipboard = new JButton("Copy URL to Clipboard");
+					copyToClipboard.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+							StringSelection selection = new StringSelection(url);
+							clipboard.setContents(selection, null);
+						}
+					});
+					
+					Object[] message = {
+							"An update is available at: "+url,
+							copyToClipboard
+					};
+					
+					JOptionPane.showMessageDialog(frmUniversalupnp, message, "Update Found!", JOptionPane.INFORMATION_MESSAGE);
+				}
+			} catch (Exception e) {
+				Main.LOGGER.log(LogSeverity.WARN, "Failed to check for update!");
+				showWarningMsg("Failed to check for update! Check log for details.");
 			}
 		});
 		updater.start();
@@ -354,8 +359,9 @@ public class MainWindow {
 		try {
 			Main.DATA.startEntry(selectedIndex, frmUniversalupnp);
 			refreshTable();
-		} catch (ArrayIndexOutOfBoundsException e) {
-			Main.LOGGER.log(LogSeverity.ERROR, "Cannot start entry! Invalid index specified: " + selectedIndex);
+		} catch (Exception e) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Cannot start entry!");
+			showWarningMsg("Could not start entry! Check log for details.");
 		}
 	}
 	
@@ -367,7 +373,10 @@ public class MainWindow {
 		try {
 			Main.DATA.stopEntry(selectedIndex);
 			refreshTable();
-		} catch (ArrayIndexOutOfBoundsException e) {}
+		} catch (Exception e) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Failed to stop entry.");
+			showWarningMsg("Failed to stop entry! Check log for details.");
+		}
 	}
 	
 	private void btnAddMappingClicked() {
@@ -398,8 +407,9 @@ public class MainWindow {
 				refreshTable();
 			}
 			inputForm.dispose();
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (Exception e) {
 			Main.LOGGER.log(LogSeverity.ERROR, "Failed to edit entry.");
+			showWarningMsg("Failed to edit entry! Check log for details.");
 		}
 	}
 	
@@ -415,32 +425,42 @@ public class MainWindow {
 			try {
 				Main.DATA.deleteEntry(selectedIndex);
 				refreshTable();
-			} catch (ArrayIndexOutOfBoundsException e) {
+			} catch (Exception e) {
 				Main.LOGGER.log(LogSeverity.ERROR, "Failed to delete entry.");
+				showWarningMsg("Failed to delete entry! Check log for details.");
 			}
 		}
 	}
 	
 	private void btnShowIPClicked() {
-		String externalIP = NetworkUtils.getExternalIPAddress();
-		
-		// Allow copying IP address to clipboard
-		JButton copyToClipboard = new JButton("Copy IP to Clipboard");
-		copyToClipboard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				StringSelection selection = new StringSelection(externalIP);
-				clipboard.setContents(selection, null);
-				Main.LOGGER.log(LogSeverity.INFO, "Copied external IP address to clipboard.");
-			}
-		});
-		
-		Object[] message = {
-				"External IP:    "+externalIP,
-				copyToClipboard
-		};
-		
-		Main.LOGGER.log(LogSeverity.INFO, "Showing external IP address.");
-		JOptionPane.showMessageDialog(frmUniversalupnp, message, "External IP", JOptionPane.INFORMATION_MESSAGE);
+		try {
+			String externalIP = NetworkUtils.getExternalIPAddress();
+			
+			// Allow copying IP address to clipboard
+			JButton copyToClipboard = new JButton("Copy IP to Clipboard");
+			copyToClipboard.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+					StringSelection selection = new StringSelection(externalIP);
+					clipboard.setContents(selection, null);
+					Main.LOGGER.log(LogSeverity.INFO, "Copied external IP address to clipboard.");
+				}
+			});
+			
+			Object[] message = {
+					"External IP:    "+externalIP,
+					copyToClipboard
+			};
+			
+			Main.LOGGER.log(LogSeverity.INFO, "Showing external IP address.");
+			JOptionPane.showMessageDialog(frmUniversalupnp, message, "External IP", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception e1) {
+			Main.LOGGER.log(LogSeverity.WARN, "Failed to optain external IP address!");
+			showWarningMsg("Failed to optain external IP address! Check log for details.");
+		}
+	}
+	
+	private void showWarningMsg(String message) {
+		JOptionPane.showMessageDialog(frmUniversalupnp, message, "Warning", JOptionPane.ERROR_MESSAGE);
 	}
 }

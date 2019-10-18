@@ -74,7 +74,7 @@ public class MappingList {
 		return entries.get(id);
 	}
 	
-	public void startEntry(int id, Component parent) throws ArrayIndexOutOfBoundsException {
+	public void startEntry(int id, Component parent) throws Exception {
 		if (id >= entries.size() || id < 0)
 			throw new ArrayIndexOutOfBoundsException();
 		
@@ -95,6 +95,8 @@ public class MappingList {
 						", Ports: "+port.portRange.x+"->"+port.portRange.y);
 			}
 			e.printStackTrace();
+			entries.get(id).stopUPnP();
+			throw new Exception();
 		}
 	}
 	
@@ -118,7 +120,10 @@ public class MappingList {
 		for (int i = 0; i < entries.size(); i++) {
 			try {
 				startEntry(i, null);
-			} catch (ArrayIndexOutOfBoundsException e) {}
+			} catch (Exception e) {
+				Main.LOGGER.log(LogSeverity.ERROR, "Could not start all entries!");
+				stopAll();
+			}
 		}
 	}
 	
