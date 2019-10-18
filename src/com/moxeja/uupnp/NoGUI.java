@@ -67,8 +67,12 @@ public class NoGUI {
 	
 	public NoGUI(String[] args) {
 		Main.LOGGER.log(LogSeverity.INFO, "Checking for updates...");
-		boolean update = NetworkUtils.needsUpdate(Main.VERSION);
-		Main.LOGGER.log(LogSeverity.INFO, "Update available: "+update);
+		try {
+			Main.LOGGER.log(LogSeverity.INFO, "Update available: "+NetworkUtils.needsUpdate(Main.VERSION));
+		} catch (Exception e) {
+			Main.LOGGER.log(LogSeverity.WARN, "Checking for update failed!");
+		}
+		
 		
 		Commands command = parseArg(args[0]);
 		if (command == Commands.Unknown || command == Commands.Stop) {
@@ -114,6 +118,9 @@ public class NoGUI {
 				return;
 			} catch (ArrayIndexOutOfBoundsException e2) {
 				Main.LOGGER.log(LogSeverity.FATAL, "Invalid entry-index specified: " + args[1]);
+				return;
+			} catch (Exception e) {
+				Main.LOGGER.log(LogSeverity.FATAL, "Could not start entry!");
 				return;
 			}
 		} else if (command == Commands.List) {
