@@ -41,7 +41,7 @@ public class Main {
 	public static Logger LOGGER;
 	public static final String VERSION = "1.7.5";
 	public static MappingList DATA;
-	public static final String LINE_SEPERATOR = System.getProperty("line.separator");
+	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	public static void main(String[] args) {
 		// Setup logging
@@ -50,11 +50,11 @@ public class Main {
 				+ "\tUniversalUPnP comes with ABSOLUTELY NO WARRANTY.%1$s"
 				+ "\tUniversalUPnP is free software, and you are welcome to redistribute it%1$s"
 				+ "\tunder certain conditions. For more information, view the LICENSE file%1$s"
-				+ "\tthat came with the binary file.", LINE_SEPERATOR));
+				+ "\tthat came with the binary file.", LINE_SEPARATOR));
 		
 		LOGGER.log(LogSeverity.INFO, String.format("Uses GSON, apache-commons-io, Cling and Seamless libraries from:%1$s"
 				+ "\thttps://github.com/google/gson, https://github.com/apache/commons-io,%1$s"
-				+ "\thttps://github.com/4thline/cling and https://github.com/4thline/seamless respectively.", LINE_SEPERATOR));
+				+ "\thttps://github.com/4thline/cling and https://github.com/4thline/seamless respectively.", LINE_SEPARATOR));
 		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
 		// Cling only prints to System.err, so redirect to file
