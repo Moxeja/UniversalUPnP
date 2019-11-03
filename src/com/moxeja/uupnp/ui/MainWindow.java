@@ -106,7 +106,7 @@ public class MainWindow {
 		frmUniversalupnp.setVisible(true);
 		frmUniversalupnp.setSize(new Dimension(680, 400));
 		frmUniversalupnp.setResizable(false);
-		frmUniversalupnp.setTitle("UniversalUPnP V"+Main.VERSION);
+		frmUniversalupnp.setTitle("UniversalUPnP v"+Main.VERSION);
 		frmUniversalupnp.setBounds(100, 100, 680, 400);
 		frmUniversalupnp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmUniversalupnp.getContentPane().setLayout(null);
