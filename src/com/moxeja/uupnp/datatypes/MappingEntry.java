@@ -35,6 +35,8 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.input.CloseShieldInputStream;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
+import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
+import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
@@ -158,20 +160,46 @@ public class MappingEntry {
 		PortMapping[] portList = null;
 		ArrayList<PortMapping> tempList = new ArrayList<PortMapping>();
 		
+		// TODO: Cleanup PortInfo datatype mess
 		for (PortInfo port : ports) {
 			if (port.protocol == Protocols.UDP) {
-				getPortIterator(port.portRange).forEachRemaining((e) -> {
-					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
-				});
+				if (port.hasRange) {
+					getPortIterator(port.portRange).forEachRemaining((e) -> {
+						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
+					});
+				} else {
+					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							internalIP, PortMapping.Protocol.UDP, name));
+				}
 			} else if (port.protocol == Protocols.TCP) {
-				getPortIterator(port.portRange).forEachRemaining((e) -> {
-					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
-				});
+				if (port.hasRange) {
+					getPortIterator(port.portRange).forEachRemaining((e) -> {
+						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
+					});
+				} else {
+					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							internalIP, PortMapping.Protocol.TCP, name));
+				}
 			} else if (port.protocol == Protocols.UDP_TCP) {
-				getPortIterator(port.portRange).forEachRemaining((e) -> {
-					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
-					tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
-				});
+				if (port.hasRange) {
+					getPortIterator(port.portRange).forEachRemaining((e) -> {
+						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
+						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
+					});
+				} else {
+					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							internalIP, PortMapping.Protocol.UDP, name));
+					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
+							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							internalIP, PortMapping.Protocol.TCP, name));
+				}
 			} else {
 				throw new Exception("Unknown Protocol Type: "+port.protocol);
 			}

@@ -24,10 +24,14 @@ import com.moxeja.uupnp.network.Protocols;
 public class PortInfo {
 
 	public Point portRange;
+	public boolean hasRange;
+	public Point internalExternalMapping;
 	public Protocols protocol;
 	
-	public PortInfo(Point portRange, Protocols protocol) {
+	public PortInfo(Point portRange, Point internalExternalMapping, Protocols protocol, boolean hasRange) {
 		this.portRange = portRange;
+		this.internalExternalMapping = internalExternalMapping;
 		this.protocol = protocol;
+		this.hasRange = hasRange;
 	}
 }

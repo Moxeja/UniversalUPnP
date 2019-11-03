@@ -52,8 +52,8 @@ public class MappingInputForm extends JDialog {
 	private JTable table;
 	private JTextField txtName;
 	
-	private final int width = 373;
-	private final int height = 351;
+	private final int width = 504;
+	private final int height = 350;
 	
 	public ArrayList<PortInfo> ports = new ArrayList<PortInfo>();
 	public boolean okClose = false;
@@ -82,21 +82,21 @@ public class MappingInputForm extends JDialog {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 36, 181, 224);
+		scrollPane.setBounds(10, 36, 312, 224);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		String[] col = { "Ports", "Protocol" };
+		String[] col = { "Internal Port", "External Port", "Protocol" };
 		table.setModel(new NoCellEditableModel(col, 0));
 		scrollPane.setViewportView(table);
 		
-		JButton btnAddPort = new JButton("Add Port");
+		JButton btnAddPort = new JButton("Add Port (Basic)");
 		btnAddPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnAddPortClicked();
 			}
 		});
-		btnAddPort.setBounds(201, 36, 156, 75);
+		btnAddPort.setBounds(332, 36, 156, 37);
 		contentPane.add(btnAddPort);
 		
 		JButton btnAddPortRange = new JButton("Add Port Range");
@@ -105,16 +105,16 @@ public class MappingInputForm extends JDialog {
 				btnAddPortRange();
 			}
 		});
-		btnAddPortRange.setBounds(201, 122, 156, 75);
+		btnAddPortRange.setBounds(332, 132, 156, 65);
 		contentPane.add(btnAddPortRange);
 		
-		JButton btnDeletePort = new JButton("Delete Port");
+		JButton btnDeletePort = new JButton("Delete Port(s)");
 		btnDeletePort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				btnDeletePortClicked();
 			}
 		});
-		btnDeletePort.setBounds(201, 208, 156, 52);
+		btnDeletePort.setBounds(332, 208, 156, 52);
 		contentPane.add(btnDeletePort);
 		
 		JLabel lblName = new JLabel("Name:");
@@ -123,7 +123,7 @@ public class MappingInputForm extends JDialog {
 		
 		txtName = new JTextField();
 		txtName.setHorizontalAlignment(SwingConstants.LEFT);
-		txtName.setBounds(48, 8, 309, 20);
+		txtName.setBounds(48, 8, 440, 20);
 		contentPane.add(txtName);
 		txtName.setColumns(10);
 		
@@ -133,7 +133,7 @@ public class MappingInputForm extends JDialog {
 				btnOkClicked();
 			}
 		});
-		btnOk.setBounds(10, 271, 208, 40);
+		btnOk.setBounds(10, 271, 289, 40);
 		contentPane.add(btnOk);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -142,8 +142,17 @@ public class MappingInputForm extends JDialog {
 				dispose();
 			}
 		});
-		btnCancel.setBounds(228, 271, 129, 40);
+		btnCancel.setBounds(309, 271, 179, 40);
 		contentPane.add(btnCancel);
+		
+		JButton btnAddPortadvanced = new JButton("Add Port (Advanced)");
+		btnAddPortadvanced.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnAddPortAdvClicked();
+			}
+		});
+		btnAddPortadvanced.setBounds(332, 84, 156, 37);
+		contentPane.add(btnAddPortadvanced);
 		
 		// If being used in edit mode
 		if (entry != null) {
@@ -199,11 +208,43 @@ public class MappingInputForm extends JDialog {
 		int option = JOptionPane.showConfirmDialog(this, message, "Add Port", JOptionPane.OK_CANCEL_OPTION);
 		if (option == JOptionPane.OK_OPTION) {
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			Object[] temp = { (Integer)port.getValue(), protocol.getSelectedValue() };
+			Object[] temp = { (Integer)port.getValue(), (Integer)port.getValue(), protocol.getSelectedValue() };
 			model.addRow(temp);
 			
 			int portNumber = (Integer)port.getValue();
-			ports.add(new PortInfo(new Point(portNumber, portNumber), protocol.getSelectedValue()));
+			Point portValue = new Point(portNumber, portNumber);
+			ports.add(new PortInfo(portValue, portValue, protocol.getSelectedValue(), false));
+		}
+	}
+	
+	private void btnAddPortAdvClicked() {
+		JSpinner portInternal = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
+		NumberEditor editor = new NumberEditor(portInternal, "#");
+		portInternal.setEditor(editor);
+		
+		JSpinner portExternal = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
+		NumberEditor editor2 = new NumberEditor(portExternal, "#");
+		portExternal.setEditor(editor2);
+		
+		JList<Protocols> protocol = new JList<Protocols>(Protocols.values());
+		protocol.setSelectedIndex(0);
+		
+		Object[] message = {
+				"Internal Port:", portInternal,
+				"External Port:", portExternal,
+				"Protocol:", protocol
+		};
+		
+		// Prompt user for settings
+		int option = JOptionPane.showConfirmDialog(this, message, "Add Port", JOptionPane.OK_CANCEL_OPTION);
+		if (option == JOptionPane.OK_OPTION) {			
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			Object[] temp = { (Integer)portInternal.getValue(), (Integer)portExternal.getValue(), protocol.getSelectedValue() };
+			model.addRow(temp);
+			
+			Point portValues = new Point((Integer)portInternal.getValue(), (Integer)portExternal.getValue());
+			ports.add(new PortInfo(new Point((Integer)portInternal.getValue(), (Integer)portInternal.getValue()),
+					portValues,protocol.getSelectedValue(), false));
 		}
 	}
 	
@@ -235,11 +276,12 @@ public class MappingInputForm extends JDialog {
 			}
 			
 			DefaultTableModel model = (DefaultTableModel) table.getModel();
-			Object[] temp = { (Integer)portBegin.getValue()+"->"+(Integer)portEnd.getValue(), protocol.getSelectedValue() };
+			String portText = (Integer)portBegin.getValue()+"->"+(Integer)portEnd.getValue();
+			Object[] temp = { portText, portText, protocol.getSelectedValue() };
 			model.addRow(temp);
 			
-			ports.add(new PortInfo(new Point((Integer)portBegin.getValue(), (Integer)portEnd.getValue()),
-					protocol.getSelectedValue()));
+			Point portValues = new Point((Integer)portBegin.getValue(), (Integer)portEnd.getValue());
+			ports.add(new PortInfo(portValues, portValues,protocol.getSelectedValue(), true));
 		}
 	}
 	
