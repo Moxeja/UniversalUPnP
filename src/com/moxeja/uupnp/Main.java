@@ -39,7 +39,7 @@ import com.moxeja.uupnp.ui.MainWindow;
 public class Main {
 	
 	public static Logger LOGGER;
-	public static final String VERSION = "1.7.5";
+	public static final String VERSION = "1.8";
 	public static MappingList DATA;
 	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
