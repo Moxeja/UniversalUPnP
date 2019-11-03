@@ -335,10 +335,15 @@ public class MainWindow {
 				StringBuilder sbProtocols = new StringBuilder();
 				
 				for (PortInfo port : entry.getPorts()) {
-					if (port.portRange.x == port.portRange.y)
-						sbPorts.append(Integer.toString(port.portRange.x)+'\n');
-					else
-						sbPorts.append(port.portRange.x+"->"+port.portRange.y+'\n');
+					if (!port.hasRange) {
+						sbPorts.append(Integer.toString(port.portRange.x));
+						if (port.internalExternalMapping.x != port.internalExternalMapping.y) {
+							sbPorts.append(String.format("(%d)", port.internalExternalMapping.y));
+						}
+					} else {
+						sbPorts.append(port.portRange.x+"->"+port.portRange.y);
+					}
+					sbPorts.append('\n');
 					
 					sbProtocols.append(port.protocol.toString()+'\n');
 				}
