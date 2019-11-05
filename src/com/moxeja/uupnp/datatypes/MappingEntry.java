@@ -25,13 +25,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Scanner;
 import java.util.stream.IntStream;
 
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 
-import org.apache.commons.io.input.CloseShieldInputStream;
 import org.fourthline.cling.UpnpService;
 import org.fourthline.cling.UpnpServiceImpl;
 import org.fourthline.cling.model.types.UnsignedIntegerFourBytes;
@@ -39,6 +37,7 @@ import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
+import com.moxeja.uupnp.InputReader;
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.network.Protocols;
@@ -128,11 +127,10 @@ public class MappingEntry {
 			}
 			
 			// Get user selection
-			Scanner scanner = new Scanner(new CloseShieldInputStream(System.in));
 			int selection = -1;
 			while (selection == -1) {
 				try {
-					int userSelection = Integer.parseInt(scanner.nextLine());
+					int userSelection = Integer.parseInt(InputReader.READER.nextLine());
 					if (userSelection >= 0 && userSelection <= (ips.length-1)) {
 						selection = userSelection;
 					} else {
@@ -142,7 +140,6 @@ public class MappingEntry {
 					Main.LOGGER.log(LogSeverity.INFO, "Invalid number.");
 				}
 			}
-			scanner.close();
 			
 			selectedIP = addresses.get(ips[selection]).getHostAddress();
 		}
