@@ -309,10 +309,15 @@ public class MainWindow {
 				+ "<br>Leaving ports open can be a big <u>security risk</u>!"
 				+ "<br>Closing the program will also close all ports opened by it this runtime.</nobr></html>";
 		JLabel lblWarning = new JLabel(warning);
+		
+		String versionNotice = "<html><nobr><u>NOTICE</u>: If you are coming from an older version of this software,"
+				+ "<br>make sure to delete the save file before continuing.</nobr></html>";
+		JLabel lblNotice = new JLabel(versionNotice);
+		JSeparator separator2 = new JSeparator(JSeparator.HORIZONTAL);
 		JCheckBox chkDisable = new JCheckBox("Disable Warning");
 		
 		Object[] message = {
-				lblLicense, separator, lblWarning, chkDisable
+				lblLicense, separator, lblWarning, separator2, lblNotice, chkDisable
 		};
 		
 		// Show warning to user
