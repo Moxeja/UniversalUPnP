@@ -18,7 +18,6 @@
 package com.moxeja.uupnp.datatypes;
 
 import java.awt.Component;
-import java.awt.Point;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -41,8 +40,8 @@ import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
-import com.moxeja.uupnp.network.Protocols;
 import com.moxeja.uupnp.Main;
+import com.moxeja.uupnp.network.Protocols;
 
 public class MappingEntry {
 
@@ -69,12 +68,8 @@ public class MappingEntry {
 		return ports;
 	}
 	
-	public Point getPort(int index) {
-		return ports.get(index).portRange;
-	}
-	
-	private Iterator<Integer> getPortIterator(Point range) {
-		IntStream temp = IntStream.rangeClosed(range.x, range.y);
+	private Iterator<Integer> getPortIterator(Port start, Port end) {
+		IntStream temp = IntStream.rangeClosed(start.externalPort, end.externalPort);
 		return temp.boxed().iterator();
 	}
 	
@@ -160,44 +155,43 @@ public class MappingEntry {
 		PortMapping[] portList = null;
 		ArrayList<PortMapping> tempList = new ArrayList<PortMapping>();
 		
-		// TODO: Cleanup PortInfo datatype mess
 		for (PortInfo port : ports) {
 			if (port.protocol == Protocols.UDP) {
 				if (port.hasRange) {
-					getPortIterator(port.portRange).forEachRemaining((e) -> {
+					getPortIterator(port.startPort, port.endPort).forEachRemaining((e) -> {
 						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
 					});
 				} else {
 					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							new UnsignedIntegerTwoBytes(port.startPort.externalPort),
+							new UnsignedIntegerTwoBytes(port.startPort.internalPort),
 							internalIP, PortMapping.Protocol.UDP, name));
 				}
 			} else if (port.protocol == Protocols.TCP) {
 				if (port.hasRange) {
-					getPortIterator(port.portRange).forEachRemaining((e) -> {
+					getPortIterator(port.startPort, port.endPort).forEachRemaining((e) -> {
 						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
 					});
 				} else {
 					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							new UnsignedIntegerTwoBytes(port.startPort.externalPort),
+							new UnsignedIntegerTwoBytes(port.startPort.internalPort),
 							internalIP, PortMapping.Protocol.TCP, name));
 				}
 			} else if (port.protocol == Protocols.UDP_TCP) {
 				if (port.hasRange) {
-					getPortIterator(port.portRange).forEachRemaining((e) -> {
+					getPortIterator(port.startPort, port.endPort).forEachRemaining((e) -> {
 						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.UDP, name));
 						tempList.add(new PortMapping(e, internalIP, PortMapping.Protocol.TCP, name));
 					});
 				} else {
 					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							new UnsignedIntegerTwoBytes(port.startPort.externalPort),
+							new UnsignedIntegerTwoBytes(port.startPort.internalPort),
 							internalIP, PortMapping.Protocol.UDP, name));
 					tempList.add(new PortMapping(true, new UnsignedIntegerFourBytes(0), null,
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.y),
-							new UnsignedIntegerTwoBytes(port.internalExternalMapping.x),
+							new UnsignedIntegerTwoBytes(port.startPort.externalPort),
+							new UnsignedIntegerTwoBytes(port.startPort.internalPort),
 							internalIP, PortMapping.Protocol.TCP, name));
 				}
 			} else {

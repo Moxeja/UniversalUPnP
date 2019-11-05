@@ -17,21 +17,25 @@
  */
 package com.moxeja.uupnp.datatypes;
 
-import java.awt.Point;
-
 import com.moxeja.uupnp.network.Protocols;
 
 public class PortInfo {
 
-	public Point portRange;
+	public Port startPort;
+	public Port endPort;
 	public boolean hasRange;
-	public Point internalExternalMapping;
 	public Protocols protocol;
 	
-	public PortInfo(Point portRange, Point internalExternalMapping, Protocols protocol, boolean hasRange) {
-		this.portRange = portRange;
-		this.internalExternalMapping = internalExternalMapping;
+	public PortInfo(Port startPort, Protocols protocol) {
+		this.startPort = startPort;
 		this.protocol = protocol;
-		this.hasRange = hasRange;
+		hasRange = false;
+	}
+	
+	public PortInfo(Port startPort, Port endPort, Protocols protocol) {
+		this.startPort = startPort;
+		this.endPort = endPort;
+		this.protocol = protocol;
+		hasRange = true;
 	}
 }
