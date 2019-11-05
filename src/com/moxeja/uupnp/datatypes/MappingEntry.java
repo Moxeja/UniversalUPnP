@@ -130,7 +130,7 @@ public class MappingEntry {
 			int selection = -1;
 			while (selection == -1) {
 				try {
-					int userSelection = Integer.parseInt(InputReader.READER.nextLine());
+					int userSelection = Integer.parseInt(InputReader.getInstance().nextLine());
 					if (userSelection >= 0 && userSelection <= (ips.length-1)) {
 						selection = userSelection;
 					} else {
