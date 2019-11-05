@@ -37,13 +37,22 @@ public class MappingList {
 		return entries.size();
 	}
 	
+	private void printPortInfo(MappingEntry entry) {
+		for (PortInfo port : entry.getPorts()) {
+			if (port.hasRange) {
+				Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
+						", Ports: "+port.startPort.externalPort+"->"+port.endPort.externalPort);
+			} else {
+				Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
+						", Port: "+port.startPort.externalPort);
+			}
+		}
+	}
+	
 	public void addEntry(MappingEntry entry) {
 		if (entry != null) {
 			Main.LOGGER.log(LogSeverity.INFO, "Creating new mapping.");
-			for (PortInfo port : entry.getPorts()) {
-				Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
-						", Ports: "+port.portRange.x+"->"+port.portRange.y);
-			}
+			printPortInfo(entry);
 			
 			entries.add(entry);
 		}
@@ -58,11 +67,7 @@ public class MappingList {
 		entries.get(id).stopUPnP();
 		
 		Main.LOGGER.log(LogSeverity.INFO, "Deleting service with id: "+id);
-		MappingEntry temp = entries.get(id);
-		for (PortInfo port : temp.getPorts()) {
-			Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-					", Ports: "+port.portRange.x+"->"+port.portRange.y);
-		}
+		printPortInfo(entries.get(id));
 		
 		entries.remove(id);
 	}
@@ -81,19 +86,13 @@ public class MappingList {
 		// Print what ports are being opened
 		Main.LOGGER.log(LogSeverity.INFO, "Starting service with id: "+id);
 		MappingEntry temp = entries.get(id);
-		for (PortInfo port : temp.getPorts()) {
-			Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-					", Ports: "+port.portRange.x+"->"+port.portRange.y);
-		}
+		printPortInfo(temp);
 		
 		try {
 			entries.get(id).startUPnP(parent);
 		} catch (Exception e) {
 			Main.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
-			for (PortInfo port : temp.getPorts()) {
-				Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-						", Ports: "+port.portRange.x+"->"+port.portRange.y);
-			}
+			printPortInfo(temp);
 			e.printStackTrace();
 			entries.get(id).stopUPnP();
 			throw new Exception();
@@ -106,11 +105,7 @@ public class MappingList {
 		
 		// Print what ports are being closed
 		Main.LOGGER.log(LogSeverity.INFO, "Stopping service with id: "+id);
-		MappingEntry temp = entries.get(id);
-		for (PortInfo port : temp.getPorts()) {
-			Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+temp.getName()+", Protocol: "+port.protocol+
-					", Ports: "+port.portRange.x+"->"+port.portRange.y);
-		}
+		printPortInfo(entries.get(id));
 		
 		entries.get(id).stopUPnP();
 	}

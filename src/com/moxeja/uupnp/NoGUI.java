@@ -17,7 +17,6 @@
  */
 package com.moxeja.uupnp;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,6 +24,7 @@ import org.apache.commons.io.input.CloseShieldInputStream;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.datatypes.MappingEntry;
+import com.moxeja.uupnp.datatypes.Port;
 import com.moxeja.uupnp.datatypes.PortInfo;
 import com.moxeja.uupnp.network.NetworkUtils;
 import com.moxeja.uupnp.network.Protocols;
@@ -83,9 +83,9 @@ public class NoGUI {
 		if (command == Commands.Create) {
 			// Create a template file for editing
 			ArrayList<PortInfo> templatePorts = new ArrayList<PortInfo>();
-			templatePorts.add(new PortInfo(new Point(8080, 8080), new Point(8080, 8080), Protocols.UDP, false));
-			templatePorts.add(new PortInfo(new Point(8081, 8085), new Point(8081, 8085), Protocols.TCP, true));
-			templatePorts.add(new PortInfo(new Point(8090, 8090), new Point(8090, 8090), Protocols.UDP_TCP, false));
+			templatePorts.add(new PortInfo(new Port(8080), Protocols.UDP));
+			templatePorts.add(new PortInfo(new Port(8081), new Port(8085), Protocols.TCP));
+			templatePorts.add(new PortInfo(new Port(8090, 8091), Protocols.UDP_TCP));
 			
 			Main.LOGGER.log(LogSeverity.INFO, "A template file will be created at: " + FileLocations.getWorkingDir());
 			Main.DATA.addEntry(new MappingEntry("Template Entry", templatePorts));

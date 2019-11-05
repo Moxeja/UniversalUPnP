@@ -17,7 +17,6 @@
  */
 package com.moxeja.uupnp.ui;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -42,6 +41,7 @@ import javax.swing.table.DefaultTableModel;
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.datatypes.MappingEntry;
+import com.moxeja.uupnp.datatypes.Port;
 import com.moxeja.uupnp.datatypes.PortInfo;
 import com.moxeja.uupnp.network.Protocols;
 
@@ -163,11 +163,17 @@ public class MappingInputForm extends JDialog {
 				DefaultTableModel model = (DefaultTableModel) table.getModel();
 				Object[] temp = null;
 				
-				if (e.portRange.x == e.portRange.y)
-					temp = new Object[] { e.portRange.x, e.protocol };
-				else
-					temp = new Object[] { e.portRange.x+"->"+e.portRange.y, e.protocol };
-					
+				if (!e.hasRange) {
+					if (e.startPort.internalPort != e.startPort.externalPort) {
+						temp = new Object[] { e.startPort.internalPort, e.startPort.externalPort, e.protocol };
+					} else {
+						temp = new Object[] { e.startPort.externalPort, e.startPort.externalPort, e.protocol };
+					}
+				} else {
+					temp = new Object[] { e.startPort.externalPort+"->"+e.endPort.externalPort,
+							e.startPort.externalPort+"->"+e.endPort.externalPort, e.protocol };
+				}
+				
 				model.addRow(temp);
 			});
 		}
@@ -211,9 +217,7 @@ public class MappingInputForm extends JDialog {
 			Object[] temp = { (Integer)port.getValue(), (Integer)port.getValue(), protocol.getSelectedValue() };
 			model.addRow(temp);
 			
-			int portNumber = (Integer)port.getValue();
-			Point portValue = new Point(portNumber, portNumber);
-			ports.add(new PortInfo(portValue, portValue, protocol.getSelectedValue(), false));
+			ports.add(new PortInfo(new Port((Integer)port.getValue()), protocol.getSelectedValue()));
 		}
 	}
 	
@@ -242,9 +246,8 @@ public class MappingInputForm extends JDialog {
 			Object[] temp = { (Integer)portInternal.getValue(), (Integer)portExternal.getValue(), protocol.getSelectedValue() };
 			model.addRow(temp);
 			
-			Point portValues = new Point((Integer)portInternal.getValue(), (Integer)portExternal.getValue());
-			ports.add(new PortInfo(new Point((Integer)portInternal.getValue(), (Integer)portInternal.getValue()),
-					portValues,protocol.getSelectedValue(), false));
+			ports.add(new PortInfo(new Port((Integer)portInternal.getValue(),
+					(Integer)portExternal.getValue()), protocol.getSelectedValue()));
 		}
 	}
 	
@@ -280,8 +283,8 @@ public class MappingInputForm extends JDialog {
 			Object[] temp = { portText, portText, protocol.getSelectedValue() };
 			model.addRow(temp);
 			
-			Point portValues = new Point((Integer)portBegin.getValue(), (Integer)portEnd.getValue());
-			ports.add(new PortInfo(portValues, portValues,protocol.getSelectedValue(), true));
+			ports.add(new PortInfo(new Port((Integer)portBegin.getValue()),
+					new Port((Integer)portEnd.getValue()),protocol.getSelectedValue()));
 		}
 	}
 	

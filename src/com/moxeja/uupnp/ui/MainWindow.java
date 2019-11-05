@@ -336,12 +336,12 @@ public class MainWindow {
 				
 				for (PortInfo port : entry.getPorts()) {
 					if (!port.hasRange) {
-						sbPorts.append(Integer.toString(port.portRange.x));
-						if (port.internalExternalMapping.x != port.internalExternalMapping.y) {
-							sbPorts.append(String.format("(%d)", port.internalExternalMapping.y));
+						sbPorts.append(Integer.toString(port.startPort.externalPort));
+						if (port.startPort.internalPort != port.startPort.externalPort) {
+							sbPorts.append(String.format("(%d)", port.startPort.internalPort));
 						}
 					} else {
-						sbPorts.append(port.portRange.x+"->"+port.portRange.y);
+						sbPorts.append(port.startPort.externalPort+"->"+port.endPort.externalPort);
 					}
 					sbPorts.append('\n');
 					
