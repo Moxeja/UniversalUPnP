@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.moxeja.uupnp</groupId>
 	<artifactId>UniversalUPnP</artifactId>
-	<version>1.8</version>
+	<version>1.8.1</version>
 
 	<repositories>
 		<repository>
