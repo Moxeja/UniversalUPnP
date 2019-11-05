@@ -18,9 +18,7 @@
 package com.moxeja.uupnp;
 
 import java.util.ArrayList;
-import java.util.Scanner;
-
-import org.apache.commons.io.input.CloseShieldInputStream;
+import java.util.Locale;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
 import com.moxeja.uupnp.datatypes.MappingEntry;
@@ -141,14 +139,12 @@ public class NoGUI {
 				+ "IMPORTANT: Make sure to NOT close the console before stopping the mappings or ports WON'T be closed!");
 		
 		// Wait for user to input any of the stop values
-		Scanner scanner = new Scanner(new CloseShieldInputStream(System.in));
 		boolean stop = false;
 		while (!stop) {
-			String input = scanner.next();
+			String input = InputReader.READER.nextLine().toLowerCase(Locale.ENGLISH);
 			if (parseArg(input) == Commands.Stop) {
 				stop = true;
 			}
 		}
-		scanner.close();
 	}
 }
