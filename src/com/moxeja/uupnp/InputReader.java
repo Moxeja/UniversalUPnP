@@ -21,11 +21,18 @@ import java.util.Scanner;
 
 public class InputReader {
 	
-	public static InputReader READER = new InputReader();
+	private static InputReader READER = null;
 	private Scanner scanner;
 
-	public InputReader() {
+	private InputReader() {
 		scanner = new Scanner(System.in);
+	}
+	
+	public static InputReader getInstance() {
+		if (READER == null) {
+			READER = new InputReader();
+		}
+		return READER;
 	}
 	
 	public String next() {

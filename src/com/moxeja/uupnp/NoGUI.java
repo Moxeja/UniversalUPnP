@@ -141,7 +141,7 @@ public class NoGUI {
 		// Wait for user to input any of the stop values
 		boolean stop = false;
 		while (!stop) {
-			String input = InputReader.READER.nextLine().toLowerCase(Locale.ENGLISH);
+			String input = InputReader.getInstance().nextLine().toLowerCase(Locale.ENGLISH);
 			if (parseArg(input) == Commands.Stop) {
 				stop = true;
 			}
