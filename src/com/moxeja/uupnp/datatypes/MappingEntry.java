@@ -80,6 +80,8 @@ public class MappingEntry {
 		if (upnpservice != null) {
 			running = true;
 			return;
+		} else if (running && (upnpservice == null)) {
+			running = false;
 		}
 		
 		// Get local IP and handle multiple network interfaces
@@ -201,7 +203,7 @@ public class MappingEntry {
 		// Create UPnP service and open ports
 		upnpservice = new UpnpServiceImpl(new PortMappingListener(portList));
 		upnpservice.getControlPoint().search();
-		running = true;
+		running = (upnpservice != null);
 	}
 	
 	public void stopUPnP() {
