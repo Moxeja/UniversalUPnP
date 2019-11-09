@@ -15,15 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.data;
 
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.Logger.LogSeverity;
-import com.moxeja.uupnp.datatypes.MappingEntry;
-import com.moxeja.uupnp.datatypes.PortInfo;
 
 public class MappingList {
 

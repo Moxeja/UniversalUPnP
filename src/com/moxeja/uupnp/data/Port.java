@@ -15,39 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.data;
 
-import java.util.Scanner;
-
-public class InputReader {
+public class Port {
 	
-	private static InputReader READER = null;
-	private Scanner scanner;
+	public int internalPort;
+	public int externalPort;
 
-	private InputReader() {
-		scanner = new Scanner(System.in);
+	public Port(int port) {
+		internalPort = port;
+		externalPort = port;
 	}
 	
-	public static InputReader getInstance() {
-		if (READER == null) {
-			READER = new InputReader();
-		}
-		return READER;
-	}
-	
-	public String next() {
-		if (scanner != null) {
-			return scanner.next();
-		} else {
-			return "";
-		}
-	}
-	
-	public String nextLine() {
-		if (scanner != null) {
-			return scanner.nextLine();
-		} else {
-			return "";
-		}
+	public Port(int internal, int external) {
+		internalPort = internal;
+		externalPort = external;
 	}
 }

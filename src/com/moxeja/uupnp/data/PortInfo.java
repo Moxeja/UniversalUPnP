@@ -15,20 +15,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.moxeja.uupnp.datatypes;
+package com.moxeja.uupnp.data;
 
-public class Port {
+import com.moxeja.uupnp.network.Protocols;
+
+public class PortInfo {
+
+	public Port startPort;
+	public Port endPort;
+	public boolean hasRange;
+	public Protocols protocol;
 	
-	public int internalPort;
-	public int externalPort;
-
-	public Port(int port) {
-		internalPort = port;
-		externalPort = port;
+	public PortInfo(Port startPort, Protocols protocol) {
+		this.startPort = startPort;
+		this.protocol = protocol;
+		hasRange = false;
 	}
 	
-	public Port(int internal, int external) {
-		internalPort = internal;
-		externalPort = external;
+	public PortInfo(Port startPort, Port endPort, Protocols protocol) {
+		this.startPort = startPort;
+		this.endPort = endPort;
+		this.protocol = protocol;
+		hasRange = true;
 	}
 }

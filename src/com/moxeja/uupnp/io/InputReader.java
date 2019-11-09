@@ -15,27 +15,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.moxeja.uupnp.datatypes;
+package com.moxeja.uupnp.io;
 
-import com.moxeja.uupnp.network.Protocols;
+import java.util.Scanner;
 
-public class PortInfo {
-
-	public Port startPort;
-	public Port endPort;
-	public boolean hasRange;
-	public Protocols protocol;
+public class InputReader {
 	
-	public PortInfo(Port startPort, Protocols protocol) {
-		this.startPort = startPort;
-		this.protocol = protocol;
-		hasRange = false;
+	private static InputReader READER = null;
+	private Scanner scanner;
+
+	private InputReader() {
+		scanner = new Scanner(System.in);
 	}
 	
-	public PortInfo(Port startPort, Port endPort, Protocols protocol) {
-		this.startPort = startPort;
-		this.endPort = endPort;
-		this.protocol = protocol;
-		hasRange = true;
+	public static InputReader getInstance() {
+		if (READER == null) {
+			READER = new InputReader();
+		}
+		return READER;
+	}
+	
+	public String next() {
+		if (scanner != null) {
+			return scanner.next();
+		} else {
+			return "";
+		}
+	}
+	
+	public String nextLine() {
+		if (scanner != null) {
+			return scanner.nextLine();
+		} else {
+			return "";
+		}
 	}
 }

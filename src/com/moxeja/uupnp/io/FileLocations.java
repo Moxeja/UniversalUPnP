@@ -15,13 +15,14 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.moxeja.uupnp;
+package com.moxeja.uupnp.io;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.Logger.LogSeverity;
 
 public class FileLocations {

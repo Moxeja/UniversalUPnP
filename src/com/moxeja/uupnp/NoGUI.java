@@ -21,9 +21,11 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
-import com.moxeja.uupnp.datatypes.MappingEntry;
-import com.moxeja.uupnp.datatypes.Port;
-import com.moxeja.uupnp.datatypes.PortInfo;
+import com.moxeja.uupnp.data.MappingEntry;
+import com.moxeja.uupnp.data.Port;
+import com.moxeja.uupnp.data.PortInfo;
+import com.moxeja.uupnp.io.FileLocations;
+import com.moxeja.uupnp.io.InputReader;
 import com.moxeja.uupnp.network.NetworkUtils;
 import com.moxeja.uupnp.network.Protocols;
 

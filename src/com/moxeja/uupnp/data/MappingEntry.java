@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package com.moxeja.uupnp.datatypes;
+package com.moxeja.uupnp.data;
 
 import java.awt.Component;
 import java.net.Inet4Address;
@@ -37,8 +37,8 @@ import org.fourthline.cling.model.types.UnsignedIntegerTwoBytes;
 import org.fourthline.cling.support.igd.PortMappingListener;
 import org.fourthline.cling.support.model.PortMapping;
 
-import com.moxeja.uupnp.InputReader;
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.io.InputReader;
 import com.moxeja.uupnp.Main;
 import com.moxeja.uupnp.network.Protocols;
 

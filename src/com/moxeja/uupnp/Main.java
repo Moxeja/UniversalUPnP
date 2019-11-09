@@ -34,6 +34,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.data.MappingList;
+import com.moxeja.uupnp.io.FileLocations;
 import com.moxeja.uupnp.ui.MainWindow;
 
 public class Main {

@@ -39,10 +39,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import com.moxeja.uupnp.Logger.LogSeverity;
+import com.moxeja.uupnp.data.MappingEntry;
+import com.moxeja.uupnp.data.Port;
+import com.moxeja.uupnp.data.PortInfo;
 import com.moxeja.uupnp.Main;
-import com.moxeja.uupnp.datatypes.MappingEntry;
-import com.moxeja.uupnp.datatypes.Port;
-import com.moxeja.uupnp.datatypes.PortInfo;
 import com.moxeja.uupnp.network.Protocols;
 
 @SuppressWarnings("serial")
