@@ -104,7 +104,7 @@ public class Logger {
 		}
 	}
 	
-	public void close() {
+	public synchronized void close() {
 		if (pw != null) {
 			pw.close();
 			pw = null;
