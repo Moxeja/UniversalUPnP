@@ -37,6 +37,7 @@ public class NoGUI {
 		Start,
 		StartAll,
 		Stop,
+		IpAddress,
 		Unknown
 	}
 	
@@ -60,6 +61,10 @@ public class NoGUI {
 		case "-list":
 		case "--list":
 			return Commands.List;
+		case "ip":
+		case "-ip":
+		case "--ip":
+			return Commands.IpAddress;
 		default:
 			return Commands.Unknown;
 		}
@@ -132,6 +137,8 @@ public class NoGUI {
 					Main.LOGGER.log(LogSeverity.INFO, String.format("\tIndex: %d, Name: %s", i, entry.getName()));
 				} catch (ArrayIndexOutOfBoundsException e) {}
 			}
+		} else if (command == Commands.IpAddress) {
+			showExternalIP();
 		}
 	}
 	
@@ -144,9 +151,22 @@ public class NoGUI {
 		boolean stop = false;
 		while (!stop) {
 			String input = InputReader.getInstance().nextLine().toLowerCase(Locale.ENGLISH);
-			if (parseArg(input) == Commands.Stop) {
+			Commands command = parseArg(input);
+			if (command == Commands.Stop) {
 				stop = true;
+			} else if (command == Commands.IpAddress) {
+				showExternalIP();
 			}
+		}
+	}
+	
+	private void showExternalIP() {
+		try {
+			String ipAddress = NetworkUtils.getExternalIPAddress();
+			Main.LOGGER.log(LogSeverity.INFO, String.format("External IP Address: %s", ipAddress));
+		} catch (Exception e) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Could not fetch external ip address!");
+			e.printStackTrace();
 		}
 	}
 }
