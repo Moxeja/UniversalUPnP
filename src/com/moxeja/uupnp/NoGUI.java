@@ -143,12 +143,9 @@ public class NoGUI {
 	}
 	
 	private void blockUntilClose() {
-		// Warn user about closing issue
-		Main.LOGGER.log(LogSeverity.INFO, "Type stop, quit, exit or q to stop the mappings.\n"
-				+ "IMPORTANT: Make sure to NOT close the console before stopping the mappings or ports WON'T be closed!");
-		
 		// Wait for user to input any of the stop values
 		boolean stop = false;
+		showCLInfoMsg();
 		while (!stop) {
 			String input = InputReader.getInstance().nextLine().toLowerCase(Locale.ENGLISH);
 			Commands command = parseArg(input);
@@ -156,8 +153,21 @@ public class NoGUI {
 				stop = true;
 			} else if (command == Commands.IpAddress) {
 				showExternalIP();
+			} else {
+				showCLInfoMsg();
 			}
 		}
+	}
+	
+	private void showCLInfoMsg() {
+		// Warn user about closing issue
+		Main.LOGGER.log(LogSeverity.INFO, "IMPORTANT: Make sure to NOT close the console before "
+				+ "stopping the mappings or ports WON'T be closed!");
+		
+		// Print valid commands
+		Main.LOGGER.log(LogSeverity.INFO, "Valid commands:");
+		Main.LOGGER.log(LogSeverity.FOLLOW, "stop, quit, exit, q = Stop mappings");
+		Main.LOGGER.log(LogSeverity.FOLLOW, "ip = Show external IP address");
 	}
 	
 	private void showExternalIP() {
