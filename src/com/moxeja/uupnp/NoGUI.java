@@ -17,6 +17,9 @@
  */
 package com.moxeja.uupnp;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -38,6 +41,7 @@ public class NoGUI {
 		StartAll,
 		Stop,
 		IpAddress,
+		Clear,
 		Unknown
 	}
 	
@@ -65,6 +69,10 @@ public class NoGUI {
 		case "-ip":
 		case "--ip":
 			return Commands.IpAddress;
+		case "clear":
+		case "-clear":
+		case "--clear":
+			return Commands.Clear;
 		default:
 			return Commands.Unknown;
 		}
@@ -78,10 +86,35 @@ public class NoGUI {
 			Main.LOGGER.log(LogSeverity.WARN, "Checking for update failed!");
 		}
 		
-		
 		Commands command = parseArg(args[0]);
 		if (command == Commands.Unknown || command == Commands.Stop) {
-			Main.LOGGER.log(LogSeverity.INFO, "Available arguments: -list, -create, -startall, -start <entry-index>");
+			Main.LOGGER.log(LogSeverity.INFO, "Available arguments: -list, -create, -startall, -start <entry-index>, -clear");
+			return;
+		}
+		
+		// Allow the user to clear the entries file from command line argument
+		if (command == Commands.Clear) {
+			try {
+				Files.delete(Paths.get(FileLocations.getEntriesFilename()));
+				
+				// Check file was actually deleted
+				if (Files.notExists(Paths.get(FileLocations.getEntriesFilename()))) {
+					Main.LOGGER.log(LogSeverity.INFO, "Deleted entries file successfully.");
+				} else {
+					throw new IOException();
+				}
+			} catch (IOException e) {
+				Main.LOGGER.log(LogSeverity.ERROR, "Failed to delete entries file.");
+			}
+			
+			return;
+		}
+		
+		// Check for entries list corruption
+		if (Main.DATA.isListCorrupted()) {
+			Main.LOGGER.log(LogSeverity.WARN, "Entries list is most likely corrupted. "
+					+ "Please use the -clear command to delete the file.");
+			
 			return;
 		}
 		
@@ -97,7 +130,8 @@ public class NoGUI {
 		} else if (command == Commands.StartAll) {
 			// Start all mappings from entries file
 			if (Main.DATA.isEmpty()) {
-				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file.");
+				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file. "
+						+ "Please use -create and edit entries file.");
 				return;
 			}
 			
@@ -106,7 +140,8 @@ public class NoGUI {
 		} else if (command == Commands.Start) {
 			// Check for valid arguments
 			if (Main.DATA.isEmpty()) {
-				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file.");
+				Main.LOGGER.log(LogSeverity.FATAL, "No valid UPnP services in entries file. "
+						+ "Please use -create and edit entries file.");
 				return;
 			} else if (args.length != 2) {
 				Main.LOGGER.log(LogSeverity.FATAL, "Incorrect -start usage! Should be: -start <entry-index>");

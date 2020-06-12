@@ -27,6 +27,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -287,6 +290,38 @@ public class MainWindow {
 		// Show data in table
 		refreshTable();
 		Main.LOGGER.log(LogSeverity.INFO, "Window initialisation complete.");
+		
+		// Check for corrupted entries list
+		if (Main.DATA.isListCorrupted()) {
+			Main.LOGGER.log(LogSeverity.ERROR, "Corrupted entries file detected!");
+			
+			// Prompt user to delete corrupted file
+			int option = JOptionPane.showConfirmDialog(frmUniversalupnp,
+					"The entries file could be corrupted and cause program issues, "
+					+ "would you like to delete and reset the file?", 
+					"Corrupted entries list", JOptionPane.YES_NO_OPTION);
+			
+			if (option == JOptionPane.YES_OPTION) {
+				try {
+					Files.delete(Paths.get(FileLocations.getEntriesFilename()));
+					
+					// Check the file was actually deleted
+					if (Files.notExists(Paths.get(FileLocations.getEntriesFilename()))) {
+						JOptionPane.showMessageDialog(frmUniversalupnp,
+								"Deleted entries file successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+						
+						Main.LOGGER.log(LogSeverity.INFO, "Deleted entries file successfully.");
+					} else {
+						throw new IOException();
+					}
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(frmUniversalupnp,
+							"Failed to delete entries file.", "Error", JOptionPane.ERROR_MESSAGE);
+					
+					Main.LOGGER.log(LogSeverity.ERROR, "Failed to delete entries file.");
+				}
+			}
+		}
 	}
 	
 	private void showStartupWarning() {

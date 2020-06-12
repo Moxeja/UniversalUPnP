@@ -36,6 +36,18 @@ public class MappingList {
 		return entries.size();
 	}
 	
+	public boolean isListCorrupted() {
+		// Loop over all entries and see if any have a null ports list
+		// (not possible through normal program use)
+		for (MappingEntry entry : entries) {
+			if (entry.getPorts() == null) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	private void printPortInfo(MappingEntry entry) {
 		for (PortInfo port : entry.getPorts()) {
 			if (port.hasRange) {
