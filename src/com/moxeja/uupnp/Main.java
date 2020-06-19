@@ -43,20 +43,19 @@ public class Main {
 	public static Logger LOGGER;
 	public static final String VERSION = "1.8.2";
 	public static MappingList DATA;
-	public static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	public static void main(String[] args) {
 		// Setup logging
 		LOGGER = new Logger(FileLocations.getLogFilename("uupnp"));
-		LOGGER.log(LogSeverity.INFO, String.format("UniversalUPnP  Copyright (C) 2019  Moxeja%1$s"
-				+ "\tUniversalUPnP comes with ABSOLUTELY NO WARRANTY.%1$s"
-				+ "\tUniversalUPnP is free software, and you are welcome to redistribute it%1$s"
-				+ "\tunder certain conditions. For more information, view the LICENSE file%1$s"
-				+ "\tthat came with the binary file.", LINE_SEPARATOR));
+		LOGGER.log(LogSeverity.INFO, "UniversalUPnP  Copyright (C) 2019  Moxeja\n"
+				+ "\tUniversalUPnP comes with ABSOLUTELY NO WARRANTY.\n"
+				+ "\tUniversalUPnP is free software, and you are welcome to redistribute it\n"
+				+ "\tunder certain conditions. For more information, view the LICENSE file\n"
+				+ "\tthat came with the binary file.");
 		
-		LOGGER.log(LogSeverity.INFO, String.format("Uses GSON, apache-commons-io, Cling and Seamless libraries from:%1$s"
-				+ "\thttps://github.com/google/gson, https://github.com/apache/commons-io,%1$s"
-				+ "\thttps://github.com/4thline/cling and https://github.com/4thline/seamless respectively.", LINE_SEPARATOR));
+		LOGGER.log(LogSeverity.INFO, "Uses GSON, apache-commons-io, Cling and Seamless libraries from:\n"
+				+ "\thttps://github.com/google/gson, https://github.com/apache/commons-io,\n"
+				+ "\thttps://github.com/4thline/cling and https://github.com/4thline/seamless respectively.");
 		LOGGER.log(LogSeverity.INFO, "Running version: "+VERSION);
 		
 		// Cling only prints to System.err, so redirect to file
@@ -93,9 +92,11 @@ public class Main {
 			Gson gs = new Gson();
 			DATA = gs.fromJson(br, MappingList.class);
 		} catch (JsonSyntaxException jse) {
+			jse.printStackTrace();
 			LOGGER.log(LogSeverity.WARN, "Entries file was found, but was not formed correctly. Could not load data.");
 			DATA = new MappingList();
 		} catch (Exception e) {
+			e.printStackTrace();
 			LOGGER.log(LogSeverity.WARN, "Entries file could not be found. One will be created on application exit.");
 			DATA = new MappingList();
 		} finally {

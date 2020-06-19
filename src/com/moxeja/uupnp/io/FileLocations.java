@@ -60,8 +60,8 @@ public class FileLocations {
 			try {
 				Files.createDirectory(temp);
 			} catch (IOException e) {
-				Main.LOGGER.log(LogSeverity.ERROR, "Could not create configuration directory.");
 				e.printStackTrace();
+				Main.LOGGER.log(LogSeverity.ERROR, "Could not create configuration directory.");
 			}
 		}
 		
@@ -89,11 +89,12 @@ public class FileLocations {
 	
 	public static void createWarningFile() {
 		try {
+			// Create a file that will disable the startup warning
 			Files.createFile(getWarningFile());
 			Main.LOGGER.log(LogSeverity.INFO, "Created file to disable warnings.");
 		} catch (IOException e) {
-			Main.LOGGER.log(LogSeverity.ERROR, "Could not disable startup warning.");
 			e.printStackTrace();
+			Main.LOGGER.log(LogSeverity.ERROR, "Could not disable startup warning.");
 		}
 	}
 }

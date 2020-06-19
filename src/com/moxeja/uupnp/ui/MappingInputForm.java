@@ -85,11 +85,13 @@ public class MappingInputForm extends JDialog {
 		scrollPane.setBounds(10, 36, 312, 224);
 		contentPane.add(scrollPane);
 		
+		// Main table
 		table = new JTable();
 		String[] col = { "Internal Port", "External Port", "Protocol" };
 		table.setModel(new NoCellEditableModel(col, 0));
 		scrollPane.setViewportView(table);
 		
+		// Add port button
 		JButton btnAddPort = new JButton("Add Port (Basic)");
 		btnAddPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -99,6 +101,7 @@ public class MappingInputForm extends JDialog {
 		btnAddPort.setBounds(332, 36, 156, 37);
 		contentPane.add(btnAddPort);
 		
+		// Add port range button
 		JButton btnAddPortRange = new JButton("Add Port Range");
 		btnAddPortRange.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -108,6 +111,7 @@ public class MappingInputForm extends JDialog {
 		btnAddPortRange.setBounds(332, 132, 156, 65);
 		contentPane.add(btnAddPortRange);
 		
+		// Delete port button
 		JButton btnDeletePort = new JButton("Delete Port(s)");
 		btnDeletePort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,6 +121,7 @@ public class MappingInputForm extends JDialog {
 		btnDeletePort.setBounds(332, 208, 156, 52);
 		contentPane.add(btnDeletePort);
 		
+		// Mapping name UI code
 		JLabel lblName = new JLabel("Name:");
 		lblName.setBounds(10, 11, 46, 14);
 		contentPane.add(lblName);
@@ -127,6 +132,7 @@ public class MappingInputForm extends JDialog {
 		contentPane.add(txtName);
 		txtName.setColumns(10);
 		
+		// OK button
 		JButton btnOk = new JButton("OK");
 		btnOk.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -136,6 +142,7 @@ public class MappingInputForm extends JDialog {
 		btnOk.setBounds(10, 271, 289, 40);
 		contentPane.add(btnOk);
 		
+		// Cancel button
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -145,6 +152,7 @@ public class MappingInputForm extends JDialog {
 		btnCancel.setBounds(309, 271, 179, 40);
 		contentPane.add(btnCancel);
 		
+		// Add port (advanced) button
 		JButton btnAddPortadvanced = new JButton("Add Port (Advanced)");
 		btnAddPortadvanced.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -180,12 +188,14 @@ public class MappingInputForm extends JDialog {
 	}
 	
 	private void btnOkClicked() {
+		// Cannot leave name field empty
 		if (txtName.getText().trim().isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Cannot leave the name field empty!",
 					"Empty Name", JOptionPane.INFORMATION_MESSAGE);
 			return;
 		}
 		
+		// No point creating a mapping with no ports
 		if (ports.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Cannot create entry with no port mappings",
 					"No port mappings", JOptionPane.INFORMATION_MESSAGE);
@@ -198,6 +208,7 @@ public class MappingInputForm extends JDialog {
 	}
 	
 	private void btnAddPortClicked() {
+		// Port number input
 		JSpinner port = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
 		NumberEditor editor = new NumberEditor(port, "#");
 		port.setEditor(editor);
@@ -222,6 +233,7 @@ public class MappingInputForm extends JDialog {
 	}
 	
 	private void btnAddPortAdvClicked() {
+		// Internal and external port UI inputs
 		JSpinner portInternal = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
 		NumberEditor editor = new NumberEditor(portInternal, "#");
 		portInternal.setEditor(editor);
@@ -252,6 +264,7 @@ public class MappingInputForm extends JDialog {
 	}
 	
 	private void btnAddPortRange() {
+		// Port range UI inputs
 		JSpinner portBegin = new JSpinner(new SpinnerNumberModel(8080, 1, 65535, 1));
 		NumberEditor editor = new NumberEditor(portBegin, "#");
 		portBegin.setEditor(editor);
@@ -293,6 +306,7 @@ public class MappingInputForm extends JDialog {
 		if (selectedIndex == -1)
 			return;
 		
+		// Remove port from list and UI table
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		model.removeRow(selectedIndex);
 		ports.remove(selectedIndex);

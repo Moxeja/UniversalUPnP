@@ -94,6 +94,7 @@ public class MainWindow {
 					JOptionPane.showMessageDialog(frmUniversalupnp, message, "Update Found!", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				Main.LOGGER.log(LogSeverity.WARN, "Failed to check for update!");
 				showWarningMsg("Failed to check for update! Check log for details.");
 			}
@@ -119,6 +120,7 @@ public class MainWindow {
 		frmUniversalupnp.setLocation(screen.width/2-frmUniversalupnp.getWidth()/2, 
 				screen.height/2-frmUniversalupnp.getHeight()/2);
 		
+		// Delete mapping button
 		JButton btnDeleteMapping = new JButton("Delete Mapping");
 		btnDeleteMapping.setToolTipText("Delete the selected UPnP mapping.");
 		btnDeleteMapping.addActionListener(new ActionListener() {
@@ -129,6 +131,7 @@ public class MainWindow {
 		btnDeleteMapping.setBounds(515, 109, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnDeleteMapping);
 		
+		// New mapping button
 		JButton btnNewMapping = new JButton("New Mapping");
 		btnNewMapping.setToolTipText("Create a new UPnP mapping.");
 		btnNewMapping.addActionListener(new ActionListener() {
@@ -146,6 +149,7 @@ public class MainWindow {
 		String col[] = {"Name", "Ports", "Protocol", "Running"};
 		tablemodel = new NoCellEditableModel(col, 0);
 		
+		// Main table
 		table = new JTable(tablemodel);
 		table.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		table.setBackground(UIManager.getColor("Table.background"));
@@ -157,6 +161,7 @@ public class MainWindow {
 		table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 16));
 		scrollPane.setViewportView(table);
 		
+		// Stop mapping button
 		JButton btnStopMapping = new JButton("Stop Mapping");
 		btnStopMapping.setToolTipText("Stops the selected UPnP service (closes the port).");
 		btnStopMapping.addActionListener(new ActionListener() {
@@ -167,6 +172,7 @@ public class MainWindow {
 		btnStopMapping.setBounds(515, 224, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStopMapping);
 		
+		// Start mapping button
 		JButton btnStartMapping = new JButton("Start Mapping");
 		btnStartMapping.setToolTipText("Start the selected UPnP service (will open the port).");
 		btnStartMapping.addActionListener(new ActionListener() {
@@ -177,6 +183,7 @@ public class MainWindow {
 		btnStartMapping.setBounds(515, 173, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnStartMapping);
 		
+		// Show external IP button
 		JButton btnShowIP = new JButton("Show External IP");
 		btnShowIP.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -187,6 +194,7 @@ public class MainWindow {
 		btnShowIP.setBounds(515, 320, 149, 40);
 		frmUniversalupnp.getContentPane().add(btnShowIP);
 		
+		// Edit mapping button
 		JButton btnEditMapping = new JButton("Edit Mapping");
 		btnEditMapping.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -315,6 +323,7 @@ public class MainWindow {
 						throw new IOException();
 					}
 				} catch (IOException e1) {
+					e1.printStackTrace();
 					JOptionPane.showMessageDialog(frmUniversalupnp,
 							"Failed to delete entries file.", "Error", JOptionPane.ERROR_MESSAGE);
 					
@@ -346,7 +355,7 @@ public class MainWindow {
 		JLabel lblWarning = new JLabel(warning);
 		
 		String versionNotice = "<html><nobr><u>NOTICE</u>: If you are coming from an older version of this software,"
-				+ "<br>make sure to delete the save file before continuing.</nobr></html>";
+				+ "<br>the entries file may not be compatible with this version.</nobr></html>";
 		JLabel lblNotice = new JLabel(versionNotice);
 		JSeparator separator2 = new JSeparator(JSeparator.HORIZONTAL);
 		JCheckBox chkDisable = new JCheckBox("Disable Warning");
@@ -405,6 +414,7 @@ public class MainWindow {
 			Main.DATA.startEntry(selectedIndex, frmUniversalupnp);
 			refreshTable();
 		} catch (Exception e) {
+			e.printStackTrace();
 			Main.LOGGER.log(LogSeverity.ERROR, "Cannot start entry!");
 			showWarningMsg("Could not start entry! Check log for details.");
 		}
@@ -419,6 +429,7 @@ public class MainWindow {
 			Main.DATA.stopEntry(selectedIndex);
 			refreshTable();
 		} catch (Exception e) {
+			e.printStackTrace();
 			Main.LOGGER.log(LogSeverity.ERROR, "Failed to stop entry.");
 			showWarningMsg("Failed to stop entry! Check log for details.");
 		}
@@ -441,6 +452,7 @@ public class MainWindow {
 			return;
 		
 		try {
+			// Create input form with selected entry information filled in
 			MappingEntry entry = Main.DATA.getEntry(selectedIndex);
 			MappingInputForm inputForm = new MappingInputForm(frmUniversalupnp, entry);
 			inputForm.setVisible(true);
@@ -453,6 +465,7 @@ public class MainWindow {
 			}
 			inputForm.dispose();
 		} catch (Exception e) {
+			e.printStackTrace();
 			Main.LOGGER.log(LogSeverity.ERROR, "Failed to edit entry.");
 			showWarningMsg("Failed to edit entry! Check log for details.");
 		}
@@ -471,6 +484,7 @@ public class MainWindow {
 				Main.DATA.deleteEntry(selectedIndex);
 				refreshTable();
 			} catch (Exception e) {
+				e.printStackTrace();
 				Main.LOGGER.log(LogSeverity.ERROR, "Failed to delete entry.");
 				showWarningMsg("Failed to delete entry! Check log for details.");
 			}
@@ -500,6 +514,7 @@ public class MainWindow {
 			Main.LOGGER.log(LogSeverity.INFO, "Showing external IP address.");
 			JOptionPane.showMessageDialog(frmUniversalupnp, message, "External IP", JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception e1) {
+			e1.printStackTrace();
 			Main.LOGGER.log(LogSeverity.WARN, "Failed to optain external IP address!");
 			showWarningMsg("Failed to optain external IP address! Check log for details.");
 		}

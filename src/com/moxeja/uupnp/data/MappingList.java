@@ -49,6 +49,7 @@ public class MappingList {
 	}
 	
 	private void printPortInfo(MappingEntry entry) {
+		// Print all port details
 		for (PortInfo port : entry.getPorts()) {
 			if (port.hasRange) {
 				Main.LOGGER.log(LogSeverity.FOLLOW, "Name: "+entry.getName()+", Protocol: "+port.protocol+
@@ -102,9 +103,9 @@ public class MappingList {
 		try {
 			entries.get(id).startUPnP(parent);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Main.LOGGER.log(LogSeverity.ERROR, "Could not start upnpservice!");
 			printPortInfo(temp);
-			e.printStackTrace();
 			entries.get(id).stopUPnP();
 			throw new Exception();
 		}
@@ -127,6 +128,7 @@ public class MappingList {
 			try {
 				startEntry(i, null);
 			} catch (Exception e) {
+				e.printStackTrace();
 				Main.LOGGER.log(LogSeverity.ERROR, "Could not start all entries!");
 				stopAll();
 			}

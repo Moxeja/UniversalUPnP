@@ -34,6 +34,7 @@ import com.moxeja.uupnp.network.Protocols;
 
 public class NoGUI {
 
+	// Valid commands
 	private enum Commands {
 		Create,
 		List,
@@ -79,13 +80,16 @@ public class NoGUI {
 	}
 	
 	public NoGUI(String[] args) {
+		// Check for any updates
 		Main.LOGGER.log(LogSeverity.INFO, "Checking for updates...");
 		try {
 			Main.LOGGER.log(LogSeverity.INFO, "Update available: "+NetworkUtils.needsUpdate(Main.VERSION));
 		} catch (Exception e) {
+			e.printStackTrace();
 			Main.LOGGER.log(LogSeverity.WARN, "Checking for update failed!");
 		}
 		
+		// Parse command string into command enum
 		Commands command = parseArg(args[0]);
 		if (command == Commands.Unknown || command == Commands.Stop) {
 			Main.LOGGER.log(LogSeverity.INFO, "Available arguments: -list, -create, -startall, -start <entry-index>, -clear");
@@ -104,6 +108,7 @@ public class NoGUI {
 					throw new IOException();
 				}
 			} catch (IOException e) {
+				e.printStackTrace();
 				Main.LOGGER.log(LogSeverity.ERROR, "Failed to delete entries file.");
 			}
 			
@@ -154,12 +159,15 @@ public class NoGUI {
 				Main.DATA.startEntry(index, null);
 				blockUntilClose();
 			} catch (NumberFormatException e) {
+				e.printStackTrace();
 				Main.LOGGER.log(LogSeverity.FATAL, "Could not convert argument to integer! Argument: " + args[1]);
 				return;
 			} catch (ArrayIndexOutOfBoundsException e2) {
+				e2.printStackTrace();
 				Main.LOGGER.log(LogSeverity.FATAL, "Invalid entry-index specified: " + args[1]);
 				return;
-			} catch (Exception e) {
+			} catch (Exception e3) {
+				e3.printStackTrace();
 				Main.LOGGER.log(LogSeverity.FATAL, "Could not start entry!");
 				return;
 			}
@@ -207,11 +215,13 @@ public class NoGUI {
 	
 	private void showExternalIP() {
 		try {
+			// Retrieve external IP address and print to screen
+			// Don't print to log for privacy reasons
 			String ipAddress = NetworkUtils.getExternalIPAddress();
-			Main.LOGGER.log(LogSeverity.INFO, String.format("External IP Address: %s", ipAddress));
+			System.out.println(String.format("External IP Address: %s", ipAddress));
 		} catch (Exception e) {
-			Main.LOGGER.log(LogSeverity.ERROR, "Could not fetch external ip address!");
 			e.printStackTrace();
+			Main.LOGGER.log(LogSeverity.ERROR, "Could not fetch external ip address!");
 		}
 	}
 }

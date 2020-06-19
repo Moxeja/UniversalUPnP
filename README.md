@@ -8,7 +8,12 @@
  Requires Java 8 or later.
  
 # Building
- To build, use:
+### Requirements
+* Maven
+* Java SDK 1.8 or higher
+
+### Using Maven
+ To build, use the following command in the UniversalUPnP directory:
  ``` shell
   mvn clean package
  ```

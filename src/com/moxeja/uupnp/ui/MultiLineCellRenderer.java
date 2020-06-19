@@ -18,6 +18,7 @@ public class MultiLineCellRenderer extends DefaultTableCellRenderer {
 		Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		int height = c.getPreferredSize().height;
 		
+		// Resize row height if necessary
 		if (table.getRowHeight(row) < height) {
 			table.setRowHeight(row, height);
 		}
@@ -26,6 +27,7 @@ public class MultiLineCellRenderer extends DefaultTableCellRenderer {
 	
 	@Override
 	protected void setValue(Object value) {
+		// Convert string to HTML representation
 		if (value instanceof String) {
 			String val = (String)value;
 			
@@ -42,6 +44,7 @@ public class MultiLineCellRenderer extends DefaultTableCellRenderer {
 		if (i < 0)
 			return s;
 		
+		// Convert string to HTML representation
 		StringBuffer sb = new StringBuffer(s.length() + 20);
 		int j = 0;
 		do {
@@ -54,6 +57,7 @@ public class MultiLineCellRenderer extends DefaultTableCellRenderer {
 	}
 	
 	private static String htmlEncode(char c) {
+		// Convert to appropriate HTML
 		switch (c) {
 		case '<': return "&lt;";
 		case '>': return "&gt;";

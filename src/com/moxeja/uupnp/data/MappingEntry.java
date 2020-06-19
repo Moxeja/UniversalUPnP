@@ -68,6 +68,7 @@ public class MappingEntry {
 	}
 	
 	private Iterator<Integer> getPortIterator(Port start, Port end) {
+		// Create an iterator for use with retrieving port ranges
 		IntStream temp = IntStream.rangeClosed(start.externalPort, end.externalPort);
 		return temp.boxed().iterator();
 	}
@@ -139,6 +140,7 @@ public class MappingEntry {
 						Main.LOGGER.log(LogSeverity.INFO, "No entry with that index.");
 					}
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
 					Main.LOGGER.log(LogSeverity.INFO, "Invalid number.");
 				}
 			}
