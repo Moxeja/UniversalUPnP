@@ -1,5 +1,5 @@
 # UniversalUPnP
- A client to allow users to create UPnP mappings manually Click [here](https://github.com/Moxeja/UniversalUPnP/wiki) to see how to use the
+ A client to allow users to create UPnP mappings manually, useful for software/games that don't make mappings themselves automatically. Click [here](https://github.com/Moxeja/UniversalUPnP/wiki) to see how to use the
  software.
  
  Uses GSON, Cling and Seamless libraries from https://github.com/google/gson,
@@ -10,7 +10,7 @@
 # Building
 ### Requirements
 * Maven
-* Java SDK 1.8 or higher
+* Java Development Kit 8 or higher
 
 ### Using Maven
  To build, use the following command in the UniversalUPnP directory:
